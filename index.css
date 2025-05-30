@@ -85,7 +85,6 @@ html {
 
 /* ------------ hero ------------ */
 .heroCard {
-  background-size: 200%;
   min-width: calc(50 * var(--unit));
 }
 
