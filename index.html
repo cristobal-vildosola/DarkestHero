@@ -3,7 +3,7 @@
   <meta charset="UTF-8" />
 
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="styles.css" />
 
   <title>Darkest Hero - by Piña</title>
   <link rel="icon" type="image/x-icon" href="img/pina.png" />
@@ -35,13 +35,28 @@
 
     <main>
       <section class="trinkets" :style="{ marginTop: TRINKET_MARGIN[level-1] }">
-        <div v-for="i in level" class="mini-h trinket">
-          <select v-model="trinkets[0]" v-if="hero">
-            <option value="" style="display: none">Select</option>
-            <option v-for="item in trinketsPool" :value="item">
-              {{ item }}
-            </option>
-          </select>
+        <div
+          v-for="i in level"
+          class="mini-h trinket"
+          :class="{used: trinketStates[i-1]}"
+          :style="trinketCard(trinkets[i-1])"
+        >
+          <div>
+            <select v-model="trinkets[i-1]" v-if="hero">
+              <option value="">None</option>
+              <optgroup
+                v-for="(level, index) in trinketsPool"
+                :label="`Level ${index}`"
+              >
+                <option v-for="item in level" :value="item">{{ item }}</option>
+              </optgroup>
+            </select>
+
+            <button
+              v-if="trinkets[i-1]"
+              @click="trinketStates[i-1] = !trinketStates[i-1]"
+            ></button>
+          </div>
         </div>
       </section>
 
@@ -69,7 +84,6 @@
             :class="{selected: abilities[i-1] >= 0}"
           >
             <select v-model="abilities[i-1]">
-              <option value="-1" style="display: none">Select</option>
               <option v-for="(item, index) in abilitiesPool" :value="index">
                 {{ item }}
               </option>
