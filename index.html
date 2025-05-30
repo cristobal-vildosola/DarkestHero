@@ -3,18 +3,14 @@
   <meta charset="UTF-8" />
 
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="index.css" />
 
   <title>Darkest Hero - by Piña</title>
-  <link rel="icon" type="image/x-icon" href="pina.png" />
-  <link rel="apple-touch-icon" href="pina.png" />
+  <link rel="icon" type="image/x-icon" href="img/pina.png" />
+  <link rel="apple-touch-icon" href="img/pina.png" />
 
   <link rel="manifest" href="manifest.json" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <meta name="apple-mobile-web-app-status-bar" content="#000" />
@@ -24,7 +20,182 @@
 <body>
   <main>
     <div id="app">
-      Darkest Hero
+      <div class="header">
+        Hero:
+        <select v-model="hero">
+          <option value="" style="display: none;">Select your Hero</option>
+          <option v-for="item in heroesPool" :value="item">
+            {{ item }}
+          </option>
+        </select>
+
+        Level:
+        <select v-model="level">
+          <option v-for="item in 3" :value="item">
+            {{ item }}
+          </option>
+        </select>
+      </div>
+
+      <div class="content">
+        <div class="trinkets" :style="{ marginTop: TRINKET_MARGIN[level] }">
+          <div class="mini-h trinket">
+            <select v-model="trinkets[0]">
+              <option value="" style="display: none;">Select</option>
+              <option v-for="item in trinketsPool" :value="item">
+                {{ item }}
+              </option>
+            </select>
+          </div>
+
+          <div class="mini-h trinket" v-if="level > 1">
+            <select v-model="trinkets[1]">
+              <option value="" style="display: none;">Select</option>
+              <option v-for="item in trinketsPool" :value="item">
+                {{ item }}
+              </option>
+            </select>
+          </div>
+
+          <div class="mini-h trinket" v-if="level > 2">
+            <select v-model="trinkets[2]">
+              <option value="" style="display: none;">Select</option>
+              <option v-for="item in trinketsPool" :value="item">
+                {{ item }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="heroCard" :style="heroCard"></div>
+
+        <div class="board">
+          <div class="stress"></div>
+
+          <div>
+            <div class="mini-h ability" :style="abilityStyle(abilities[0])">
+              <select v-model="abilities[0]">
+                <option value="-1" style="display: none;">Select</option>
+                <option v-for="(item, index) in abilitiesPool" :value="index">
+                  {{ item }}
+                </option>
+              </select>
+              <select v-if="abilities[0] >= 0" v-model="abilitiesLevels[abilities[0]]">
+                <option v-for="item in 3" :value="item">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+
+            <div class="mini-h ability" :style="abilityStyle(abilities[1])">
+              <select v-model="abilities[1]">
+                <option value="-1" style="display: none;">Select</option>
+                <option v-for="(item, index) in abilitiesPool" :value="index">
+                  {{ item }}
+                </option>
+              </select>
+              <select v-if="abilities[1] >= 0" v-model="abilitiesLevels[abilities[1]]">
+                <option v-for="item in 3" :value="item">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+
+            <div class="mini-h ability" :style="abilityStyle(abilities[2])">
+              <select v-model="abilities[2]">
+                <option value="-1" style="display: none;">Select</option>
+                <option v-for="(item, index) in abilitiesPool" :value="index">
+                  {{ item }}
+                </option>
+              </select>
+              <select v-if="abilities[2] >= 0" v-model="abilitiesLevels[abilities[2]]">
+                <option v-for="item in 3" :value="item">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+
+            <div class="mini-h ability" :style="abilityStyle(abilities[3])" v-if="level > 1">
+              <select v-model="abilities[3]">
+                <option value="-1" style="display: none;">Select</option>
+                <option v-for="(item, index) in abilitiesPool" :value="index">
+                  {{ item }}
+                </option>
+              </select>
+              <select v-if="abilities[3] >= 0" v-model="abilitiesLevels[abilities[3]]">
+                <option v-for="item in 3" :value="item">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+
+            <div class="mini-h ability" :style="abilityStyle(abilities[4])" v-if="level > 2">
+              <select v-model="abilities[4]">
+                <option value="-1" style="display: none;">Select</option>
+                <option v-for="(item, index) in abilitiesPool" :value="index">
+                  {{ item }}
+                </option>
+              </select>
+              <select v-if="abilities[4] >= 0" v-model="abilitiesLevels[abilities[4]]">
+                <option v-for="item in 3" :value="item">
+                  Level {{ item }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="diseases">
+            <div class="mini-v disease">
+              <select v-model="disease">
+                <option value="" style="display: none;">Select</option>
+                <option v-for="item in diseases" :value="item">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+
+            <div class="mini-v virtue">
+              <select v-model="affliction">
+                <option value="" style="display: none;">Select</option>
+                <option v-for="item in afflictions" :value="item">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="quirks">
+            <div class="mini-v quirk">
+              <select v-model="quirks[0]">
+                <option value="" style="display: none;">Select</option>
+                <option v-for="item in quirksPool" :value="item">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+
+            <div class="mini-v quirk">
+              <select v-model="quirks[1]">
+                <option value="" style="display: none;">Select</option>
+                <option v-for="item in quirksPool" :value="item">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+
+            <div class="mini-v quirk">
+              <select v-model="quirks[2]">
+                <option value="" style="display: none;">Select</option>
+                <option v-for="item in quirksPool" :value="item">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 

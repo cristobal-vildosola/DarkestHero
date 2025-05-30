@@ -8,7 +8,7 @@
   "orientation": "landscape",
   "icons": [
     {
-      "src": "pina.png",
+      "src": "img/pina.png",
       "type": "image/png",
       "sizes": "120x120"
     }

@@ -1,6 +1,168 @@
-body {
+body,
+html {
   margin: 0;
-  overflow: auto;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  padding: 0;
+  overflow: auto hidden;
+  font-family: 'sans-serif';
+  background-color: black;
+  color: yellow;
+
+  --unit: 1vh
+}
+
+* {
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: calc(10 * var(--unit));
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  margin-top: calc(10 * var(--unit));
+  height: calc(90 * var(--unit));
+  display: flex;
+  align-items: stretch;
+}
+
+/* ------------ card sizes ------------ */
+.mini-h {
+  height: calc(21 * var(--unit));
+  width: calc(32.5 * var(--unit));
+}
+
+.mini-v {
+  height: calc(32.5 * var(--unit));
+  width: calc(21 * var(--unit));
+}
+
+.mini-h,
+.mini-v {
+  background-size: 100%;
+  border-radius: 2vh;
+  box-shadow: 0 0 1vh rgb(103 103 43 / 50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  padding: 2px;
+}
+
+/* ------------ trinkets ------------ */
+.trinkets {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.trinket {
+  margin-bottom: calc(2.2 * var(--unit));
+
+}
+
+.trinket:nth-child(1) {
+  background-image: url(img/game/trinket1.jpg);
+}
+
+.trinket:nth-child(2) {
+  background-image: url(img/game/trinket2.jpg);
+}
+
+.trinket:nth-child(3) {
+  background-image: url(img/game/trinket3.jpg);
+}
+
+
+/* ------------ hero ------------ */
+.heroCard {
+  background-size: 200%;
+  min-width: calc(50 * var(--unit));
+}
+
+/* ------------ abilities ------------ */
+.board {
+  position: relative;
+  background-image: url(img/game/board.png);
+  background-size: 100%;
+  min-width: calc(76 * var(--unit));
+}
+
+.stress {
+  position: absolute;
+  left: 12.3%;
+  top: 4.2%;
+  height: calc(7 * var(--unit));
+  width: calc(58.3 * var(--unit));
+  background-color: #fff5;
+}
+
+.ability {
+  position: absolute;
+}
+
+.ability:nth-child(1) {
+  top: 23.5%;
+  left: 3.9%;
+}
+
+.ability:nth-child(2) {
+  top: 47.7%;
+  left: 3.9%;
+}
+
+.ability:nth-child(3) {
+  top: 47.7%;
+  left: 47.7%;
+}
+
+.ability:nth-child(4) {
+  top: 71.9%;
+  left: 3.9%;
+}
+
+.ability:nth-child(5) {
+  top: 71.9%;
+  left: 47.7%;
+}
+
+/* ------------ quirks ------------ */
+.right {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.diseases {
+  display: flex;
+  margin-top: calc(10 * var(--unit));
+}
+
+.disease {
+  margin-right: 10px;
+  background-image: url(img/game/disease.jpg);
+}
+
+.virtue {
+  margin-right: 10px;
+  background-image: url(img/game/virtue.jpg);
+}
+
+.quirks {
+  display: flex;
+  margin-top: calc(7 * var(--unit));
+}
+
+.quirk {
+  margin-right: 10px;
+  background-image: url(img/game/quirk.jpg);
 }

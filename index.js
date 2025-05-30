@@ -1,9 +1,38 @@
-const { createApp } = Vue;
+const { createApp } = Vue
+
+// card positions
+const TOP = '0%';
+const BOTTOM = '100%';
+const X_POS = { 1: '0%', 2: '0%', 3: '100%' }
+const CARD = { 1: 'hero.png', 2: 'hero2.png', 3: 'hero.png' }
+const TRINKET_MARGIN = { 1: 'calc(8 * var(--unit))', 2: 'calc(3 * var(--unit))', 3: 'calc(2 * var(--unit))' }
+
+const heroes = {
+  'houndmaster': {
+    position: BOTTOM,
+    abilities: ["Hound's Rush", "Hound's Harry", 'Target Whistle', 'Cry Havoc', 'Guard Dog', 'Lick Wounds', 'Blackjack']
+  }
+}
 
 createApp({
   data() {
     return {
-      rotate: false,
+      hero: 'houndmaster',
+      level: 1,
+      trinkets: ['', '', ''],
+      abilities: [-1, -1, -1, -1, -1],
+      abilitiesLevels: [1, 1, 1, 1, 1, 1, 1],
+      disease: '',
+      affliction: '',
+      quirks: ['', '', ''],
+
+      heroesPool: Object.keys(heroes),
+      trinketsPool: ['', '', ''],
+      diseases: ['', '', ''],
+      afflictions: ['', '', ''],
+      quirksPool: ['', '', ''],
+
+      TRINKET_MARGIN: TRINKET_MARGIN,
     };
   },
 
@@ -13,11 +42,40 @@ createApp({
     this.checkWindowSize();
     this.loadGame();
   },
+
   unmounted() {
     window.removeEventListener('resize', this.checkWindowSize);
   },
 
+  computed: {
+    heroCard() {
+      return {
+        backgroundImage: `url('img/${this.hero}/${CARD[this.level]}')`,
+        backgroundPosition: `${X_POS[this.level]} ${heroes[this.hero].position}`,
+      };
+    },
+    abilitiesPool() {
+      return heroes[this.hero].abilities;
+    },
+  },
+
   methods: {
+    abilityStyle(ability) {
+      if (ability == -1) {
+        return {
+          boxShadow: 'none'
+        };
+      }
+
+      const index = ability * 3 + this.abilitiesLevels[ability] - 1;
+      const x = (index % 7) * 100 / (7 - 1);
+      const y = Math.floor(index / 7) * 100 / (3 - 1);
+      return {
+        backgroundImage: `url('img/${this.hero}/abilities.png')`,
+        backgroundSize: '700%',
+        backgroundPosition: `${x}% ${y}%`
+      };
+    },
 
     saveGame() {
       const hero = {
