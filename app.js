@@ -1,10 +1,9 @@
 const { createApp } = Vue
 
-
 createApp({
   data() {
     return {
-      hero: 'houndmaster',
+      hero: '',
       level: 1,
       trinkets: ['', '', ''],
       abilities: [-1, -1, -1, -1, -1],
@@ -12,7 +11,9 @@ createApp({
       disease: '',
       affliction: '',
       quirks: ['', '', ''],
-      // TODO: health, xp, buffs
+      wounds: 0,
+      xp: 0,
+      buffs: 0,
 
       // options
       heroesPool: Object.keys(heroes),
@@ -33,12 +34,13 @@ createApp({
 
   computed: {
     abilitiesPool() {
-      return heroes[this.hero].abilities;
+      return this.hero == '' ? [] : heroes[this.hero].abilities;
     },
 
     heroCard() {
-      const card = heroes[this.hero].cardSprite[this.level - 1];
+      if (this.hero == '') return {};
 
+      const card = heroes[this.hero].cardSprite[this.level - 1];
       return {
         backgroundImage: `url('img/${this.hero}/${card.url}')`,
         backgroundPosition: `${card.x} ${card.y}`,
@@ -46,26 +48,21 @@ createApp({
       };
     },
     diseaseCard() {
-      if (this.disease === '') {
-        return {};
-      }
-      const index = diseases.indexOf(this.disease);
+      if (this.disease == '') return {};
 
       return {
         backgroundImage: 'url(img/game/diseases.png)',
-        backgroundPosition: this.position(index, 10, 7),
+        backgroundPosition: this.position(diseases.indexOf(this.disease), 10, 7),
         backgroundSize: '1000%',
       };
     },
     afflictionCard() {
-      if (this.affliction === '') {
-        return {};
-      }
+      if (this.affliction == '') return {};
+
       const indexAff = afflictions.indexOf(this.affliction);
       const indexVir = virtues.indexOf(this.affliction);
       const index = Math.max(indexAff, indexVir);
       const sprite = indexAff > -1 ? 'afflictions' : 'virtues';
-
       return {
         backgroundImage: `url(img/game/${sprite}.png)`,
         backgroundPosition: this.position(index, 10, 7),
@@ -80,16 +77,25 @@ createApp({
       const y = Math.floor(index / x_n) * 100 / (y_n - 1);
       return `${x}% ${y}%`
     },
+    // TODO: trinketCard
+    trinketCard(trinket) {
+      if (trinket == '') return {};
+
+      const index = trinket * 3 + this.abilitiesLevels[trinket] - 1;
+      const x_n = heroes[this.hero].abilitiesSize[0]
+      const y_n = heroes[this.hero].abilitiesSize[1]
+      return {
+        backgroundImage: `url('img/${this.hero}/abilities.png')`,
+        backgroundSize: `${x_n * 100}%`,
+        backgroundPosition: this.position(index, x_n, y_n),
+      };
+    },
     abilityCard(ability) {
-      if (ability == -1) {
-        return {
-          boxShadow: 'none'
-        };
-      }
+      if (ability == -1) return { boxShadow: 'none' };
+
       const index = ability * 3 + this.abilitiesLevels[ability] - 1;
       const x_n = heroes[this.hero].abilitiesSize[0]
       const y_n = heroes[this.hero].abilitiesSize[1]
-
       return {
         backgroundImage: `url('img/${this.hero}/abilities.png')`,
         backgroundSize: `${x_n * 100}%`,
@@ -97,14 +103,12 @@ createApp({
       };
     },
     quirkCard(quirk) {
-      if (quirk === '') {
-        return {};
-      }
+      if (quirk == '') return {};
+
       const indexNeg = negatives.indexOf(quirk);
       const indexPos = positives.indexOf(quirk);
       const index = Math.max(indexNeg, indexPos);
       const sprite = indexNeg > -1 ? 'negatives' : 'positives';
-
       return {
         backgroundImage: `url(img/game/${sprite}.png)`,
         backgroundPosition: this.position(index, 10, 7),
@@ -112,16 +116,37 @@ createApp({
       };
     },
 
-    // TODO save, load, export and import game
+    // export and import game
     saveGame() {
       const hero = {
+        hero: this.hero,
+        level: this.level,
+        trinkets: this.trinkets,
+        abilities: this.abilities,
+        abilitiesLevels: this.abilitiesLevels,
+        disease: this.disease,
+        affliction: this.affliction,
+        quirks: this.quirks,
+        wounds: this.wounds,
+        xp: this.xp,
+        buffs: this.buffs,
       };
       localStorage.setItem('darkestHero', JSON.stringify(hero));
     },
     loadGame() {
       const save = JSON.parse(localStorage.getItem('darkestHero'));
-
       if (save) {
+        this.hero = save.hero || '';
+        this.level = save.level || 1;
+        this.trinkets = save.trinkets || ['', '', ''];
+        this.abilities = save.abilities || [-1, -1, -1, -1, -1];
+        this.abilitiesLevels = save.abilitiesLevels || [1, 1, 1, 1, 1, 1, 1];
+        this.disease = save.disease || '';
+        this.affliction = save.affliction || '';
+        this.quirks = save.quirks || ['', '', ''];
+        this.wounds = save.wounds || 0;
+        this.xp = save.xp || 0;
+        this.buffs = save.buffs || 0;
       }
     },
   },

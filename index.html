@@ -19,10 +19,10 @@
     <div id="app">
       <div class="header">
         Hero:
-        <select v-model="hero">
-          <option value="" style="display: none;">Select your Hero</option>
-          <option v-for="item in heroesPool" :value="item">
-            {{ item }}
+        <select v-model="hero" class="hero">
+          <option value="" style="display: none;">select your hero</option>
+          <option v-for="item in heroesPool" :value="item" class="hero">
+            {{ item.replaceAll('_', ' ') }}
           </option>
         </select>
 
@@ -46,7 +46,11 @@
           </div>
         </div>
 
-        <div class="heroCard" :style="heroCard"></div>
+        <div class="heroCard" :style="heroCard">
+          <div v-if="hero" class="wounds">
+            <input type="number" v-model="wounds" min="0">
+          </div>
+        </div>
 
         <div class="board">
           <div class="stress"></div>
