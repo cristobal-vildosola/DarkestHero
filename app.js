@@ -1,20 +1,24 @@
 const { createApp } = Vue;
 
+const defaultHero = {
+  hero: "",
+  level: 1,
+  trinkets: ["", "", ""],
+  trinketStates: [false, false, false],
+  abilities: [-1, -1, -1, -1, -1],
+  abilitiesLevels: [1, 1, 1, 1, 1, 1, 1],
+  disease: "",
+  affliction: "",
+  quirks: ["", "", ""],
+  wounds: 0,
+  xp: 0,
+  stress: 0,
+};
+
 createApp({
   data() {
     return {
-      hero: "crusader",
-      level: 1,
-      trinkets: ["", "", ""],
-      trinketStates: [false, false, false],
-      abilities: [-1, -1, -1, -1, -1],
-      abilitiesLevels: [1, 1, 1, 1, 1, 1, 1],
-      disease: "",
-      affliction: "",
-      quirks: ["", "", ""],
-      wounds: 0,
-      xp: 0,
-      stress: 0,
+      current: { ...defaultHero },
 
       // options
       heroesPool: Object.keys(heroes),
@@ -32,29 +36,37 @@ createApp({
   mounted() {
     this.loadGame();
   },
+  watch: {
+    current: {
+      handler() {
+        this.saveGame();
+      },
+      deep: true,
+    },
+  },
 
   computed: {
     abilitiesPool() {
-      return this.hero == "" ? [] : heroes[this.hero].abilities;
+      return this.current.hero == "" ? [] : heroes[this.current.hero].abilities;
     },
 
     heroCard() {
-      if (this.hero == "") return {};
+      if (this.current.hero == "") return {};
 
-      const card = heroes[this.hero].cardSprite[this.level - 1];
+      const card = heroes[this.current.hero].cardSprite[this.current.level - 1];
       return {
-        backgroundImage: `url('img/${this.hero}/${card.url}')`,
+        backgroundImage: `url('img/${this.current.hero}/${card.url}')`,
         backgroundPosition: `${card.x} ${card.y}`,
         backgroundSize: card.size,
       };
     },
     diseaseCard() {
-      if (this.disease == "") return {};
+      if (this.current.disease == "") return {};
 
       return {
         backgroundImage: "url(img/game/diseases.png)",
         backgroundPosition: this.position(
-          diseases.indexOf(this.disease),
+          diseases.indexOf(this.current.disease),
           10,
           7
         ),
@@ -62,10 +74,10 @@ createApp({
       };
     },
     afflictionCard() {
-      if (this.affliction == "") return {};
+      if (this.current.affliction == "") return {};
 
-      const indexAff = afflictions.indexOf(this.affliction);
-      const indexVir = virtues.indexOf(this.affliction);
+      const indexAff = afflictions.indexOf(this.current.affliction);
+      const indexVir = virtues.indexOf(this.current.affliction);
       const index = Math.max(indexAff, indexVir);
       const sprite = indexAff > -1 ? "afflictions" : "virtues";
       return {
@@ -77,12 +89,6 @@ createApp({
   },
 
   methods: {
-    position(index, x_n, y_n) {
-      const x = ((index % x_n) * 100) / (x_n - 1);
-      const y = (Math.floor(index / x_n) * 100) / (y_n - 1);
-      return `${x}% ${y}%`;
-    },
-
     trinketCard(trinket) {
       if (trinket == "") return {};
 
@@ -103,11 +109,11 @@ createApp({
     abilityCard(ability) {
       if (ability == -1) return { boxShadow: "none" };
 
-      const index = ability * 3 + this.abilitiesLevels[ability] - 1;
-      const x_n = heroes[this.hero].abilitiesSize[0];
-      const y_n = heroes[this.hero].abilitiesSize[1];
+      const index = ability * 3 + this.current.abilitiesLevels[ability] - 1;
+      const x_n = heroes[this.current.hero].abilitiesSize[0];
+      const y_n = heroes[this.current.hero].abilitiesSize[1];
       return {
-        backgroundImage: `url('img/${this.hero}/abilities.png')`,
+        backgroundImage: `url('img/${this.current.hero}/abilities.png')`,
         backgroundSize: `${x_n * 100}%`,
         backgroundPosition: this.position(index, x_n, y_n),
       };
@@ -126,40 +132,50 @@ createApp({
       };
     },
 
-    // export and import game
+    // sprite position
+    position(index, x_n, y_n) {
+      const x = ((index % x_n) * 100) / (x_n - 1);
+      const y = (Math.floor(index / x_n) * 100) / (y_n - 1);
+      return `${x}% ${y}%`;
+    },
+
     saveGame() {
-      const hero = {
-        hero: this.hero,
-        level: this.level,
-        trinkets: this.trinkets,
-        trinketStates: this.trinketStates,
-        abilities: this.abilities,
-        abilitiesLevels: this.abilitiesLevels,
-        disease: this.disease,
-        affliction: this.affliction,
-        quirks: this.quirks,
-        wounds: this.wounds,
-        xp: this.xp,
-        stress: this.stress,
-      };
-      localStorage.setItem("darkestHero", JSON.stringify(hero));
+      localStorage.setItem("darkestHero", JSON.stringify(this.current));
     },
     loadGame() {
       const save = JSON.parse(localStorage.getItem("darkestHero"));
       if (save) {
-        this.hero = save.hero || "";
-        this.level = save.level || 1;
-        this.trinkets = save.trinkets || ["", "", ""];
-        this.trinketStates = save.trinketStates || [false, false, false];
-        this.abilities = save.abilities || [-1, -1, -1, -1, -1];
-        this.abilitiesLevels = save.abilitiesLevels || [1, 1, 1, 1, 1, 1, 1];
-        this.disease = save.disease || "";
-        this.affliction = save.affliction || "";
-        this.quirks = save.quirks || ["", "", ""];
-        this.wounds = save.wounds || 0;
-        this.xp = save.xp || 0;
-        this.stress = save.stress || 0;
+        this.current = { ...defaultHero, ...save };
       }
+    },
+
+    exportSave() {
+      const save = JSON.stringify(this.current, null, 2);
+      const dataStr =
+        "data:text/json;charset=utf-8," + encodeURIComponent(save);
+      const dlAnchorElem = document.getElementById("export");
+      dlAnchorElem.setAttribute("href", dataStr);
+      dlAnchorElem.setAttribute("download", "DarkestHero.json");
+      dlAnchorElem.click();
+    },
+    importSave() {
+      document.getElementById("import").click();
+    },
+    onFileUpload(event) {
+      if (!event.target.files[0]) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const save = JSON.parse(event.target.result);
+        this.current = save;
+      };
+      reader.readAsText(event.target.files[0]);
+    },
+
+    // TODO: clear save file
+    clearSave() {
+      localStorage.removeItem("darkestHero");
+      this.current = { ...defaultHero };
     },
   },
 }).mount("#app");

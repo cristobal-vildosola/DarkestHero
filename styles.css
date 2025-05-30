@@ -16,49 +16,7 @@ html {
   touch-action: manipulation;
   outline: none;
 }
-
-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: calc(10 * var(--unit));
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.hero {
-  text-transform: capitalize;
-}
-
-select.hero {
-  font-size: calc(2.5 * var(--unit));
-  background: #0b0704;
-  color: #fedfae;
-  border-radius: var(--unit) 0 0 var(--unit);
-  font-family: serif;
-  margin-right: calc(-2.5 * var(--unit));
-}
-select.level {
-  background: #0b0704;
-  width: calc(7 * var(--unit));
-  height: calc(7 * var(--unit));
-  border-radius: 50%;
-  text-align: center;
-  color: #fedfae;
-  font-family: serif;
-  font-size: calc(3 * var(--unit));
-}
-
-main {
-  margin-top: calc(10 * var(--unit));
-  height: calc(90 * var(--unit));
-  display: flex;
-  align-items: stretch;
-}
-
-/* ------------ card sizes ------------ */
+/* ------------ common ------------ */
 .mini-h {
   height: calc(21 * var(--unit));
   width: calc(32.5 * var(--unit));
@@ -85,6 +43,7 @@ main {
   background: #fff2;
   color: transparent;
   font-size: 0;
+  cursor: pointer;
 }
 
 button {
@@ -94,6 +53,81 @@ button {
   border: 1px solid #fff2;
   touch-action: manipulation;
   padding: 0;
+}
+
+select {
+  cursor: pointer;
+}
+
+/* ------------ header ------------ */
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: calc(10 * var(--unit));
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hero {
+  text-transform: capitalize;
+}
+
+select.hero {
+  font-size: calc(2.5 * var(--unit));
+  background: #0b0704;
+  color: #fedfae;
+  border-radius: var(--unit) 0 0 var(--unit);
+  margin-right: calc(-3 * var(--unit));
+  padding-right: calc(1 * var(--unit));
+  text-align: center;
+  width: calc(22 * var(--unit));
+}
+select.level {
+  background: #0b0704;
+  width: calc(7 * var(--unit));
+  height: calc(7 * var(--unit));
+  border-radius: 50%;
+  text-align: center;
+  color: #fedfae;
+  font-size: calc(3 * var(--unit));
+}
+
+.import,
+.export {
+  width: calc(5 * var(--unit));
+  height: calc(5 * var(--unit));
+  background: #0b0704;
+  border-radius: 100%;
+  margin-left: 10px;
+  border: 1px solid #fff7;
+}
+.import::after,
+.export::after {
+  display: block;
+  content: "";
+  width: 70%;
+  height: 70%;
+  margin: 15%;
+  background-size: 100%;
+  /* change color to #fedfae https://codepen.io/sosuke/pen/Pjoqqp */
+  filter: invert(98%) sepia(36%) saturate(5358%) hue-rotate(298deg)
+    brightness(117%) contrast(112%);
+}
+.import::after {
+  background-image: url(img/icons/upload.svg);
+}
+.export::after {
+  background-image: url(img/icons/save.svg);
+}
+
+main {
+  margin-top: calc(10 * var(--unit));
+  height: calc(90 * var(--unit));
+  display: flex;
+  align-items: stretch;
 }
 
 /* ------------ trinkets ------------ */
@@ -145,7 +179,7 @@ button {
   background-image: url(img/game/trinket3.jpg);
 }
 
-/* ------------ hero ------------ */
+/* ------------ hero card ------------ */
 .heroCard {
   min-width: calc(50 * var(--unit));
   background-image: url(img/game/hero.png);
@@ -166,7 +200,6 @@ button {
   color: red;
   font-size: calc(3.5 * var(--unit));
 
-  background: transparent;
   background-image: url(img/game/wounds.png);
   background-size: 100%;
   border-radius: 100%;

@@ -2,12 +2,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8" />
 
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <link rel="stylesheet" href="styles.css" />
 
   <title>Darkest Hero - by Piña</title>
-  <link rel="icon" type="image/x-icon" href="img/pina.png" />
-  <link rel="apple-touch-icon" href="img/pina.png" />
+  <link rel="icon" type="image/x-icon" href="img/icons/pina.png" />
+  <link rel="apple-touch-icon" href="img/icons/pina.png" />
 
   <link
     rel="manifest"
@@ -22,83 +22,110 @@
 <body>
   <div id="app">
     <header>
-      <select v-model="hero" class="hero">
-        <option value="" style="display: none">select your hero</option>
-        <option v-for="item in heroesPool" :value="item">
-          {{ item.replaceAll('_', ' ') }}
+      <select v-model="current.hero" class="hero">
+        <option value="" style="display: none">select hero</option>
+        <option v-for="name in heroesPool" :value="name">
+          {{ name.replaceAll('_', ' ') }}
         </option>
       </select>
-      <select v-model="level" class="level">
-        <option v-for="item in 3" :value="item">{{ 'I'.repeat(item) }}</option>
+      <select v-model="current.level" class="level">
+        <option v-for="x in 3" :value="x">{{ 'I'.repeat(x) }}</option>
       </select>
+
+      <button @click="exportSave()" class="export"></button>
+      <a id="export" style="display: none"></a>
+
+      <button @click="importSave()" class="import"></button>
+      <input
+        type="file"
+        accept=".json"
+        id="import"
+        @change="onFileUpload"
+        style="display: none"
+      />
     </header>
 
     <main>
-      <section class="trinkets" :style="{ marginTop: TRINKET_MARGIN[level-1] }">
+      <section
+        class="trinkets"
+        :style="{ marginTop: TRINKET_MARGIN[current.level-1] }"
+      >
         <div
-          v-for="i in level"
+          v-for="i in current.level"
           class="mini-h trinket"
-          :class="{used: trinketStates[i-1]}"
-          :style="trinketCard(trinkets[i-1])"
+          :class="{used: current.trinketStates[i-1]}"
+          :style="trinketCard(current.trinkets[i-1])"
         >
           <div>
-            <select v-model="trinkets[i-1]" v-if="hero">
+            <select v-model="current.trinkets[i-1]" v-if="current.hero">
               <option value="">None</option>
               <optgroup
-                v-for="(level, index) in trinketsPool"
+                v-for="(trinkets, index) in trinketsPool"
                 :label="`Level ${index}`"
               >
-                <option v-for="item in level" :value="item">{{ item }}</option>
+                <option v-for="trinket in trinkets" :value="trinket">
+                  {{ trinket }}
+                </option>
               </optgroup>
             </select>
 
             <button
-              v-if="trinkets[i-1]"
-              @click="trinketStates[i-1] = !trinketStates[i-1]"
+              v-if="current.trinkets[i-1]"
+              @click="current.trinketStates[i-1] = !current.trinketStates[i-1]"
             ></button>
           </div>
         </div>
       </section>
 
       <section class="heroCard" :style="heroCard">
-        <div v-if="hero" class="wounds">
-          <button @click="wounds > 0 ? wounds-- : null"></button>
-          <span>{{ wounds }}</span>
-          <button @click="wounds++"></button>
+        <div v-if="current.hero" class="wounds">
+          <button
+            @click="current.wounds > 0 ? current.wounds-- : null"
+          ></button>
+          <span>{{ current.wounds }}</span>
+          <button @click="current.wounds++"></button>
         </div>
-        <div v-if="hero" class="xp">
-          <button @click="xp > 0 ? xp-- : null"></button>
-          <span>{{ xp }}</span>
-          <button @click="xp++"></button>
+        <div v-if="current.hero" class="xp">
+          <button @click="current.xp > 0 ? current.xp-- : null"></button>
+          <span>{{ current.xp }}</span>
+          <button @click="current.xp++"></button>
         </div>
       </section>
 
       <section class="board">
-        <div v-if="hero" class="stressCount">
-          <button @click="stress > 0 ? stress-- : null"></button>
-          <span>{{ stress }}</span>
-          <button @click="stress++"></button>
-        </div>
-        <div v-if="stress > 9" class="afflicted"></div>
-        <div v-if="hero" class="stress" :class="{red: stress > 9}">
-          <div v-for="_ in stress % 10"></div>
+        <div v-if="current.hero" class="stressCount">
+          <button
+            @click="current.stress > 0 ? current.stress-- : null"
+          ></button>
+          <span>{{ current.stress }}</span>
+          <button @click="current.stress++"></button>
         </div>
 
-        <div v-if="hero" abilities>
+        <div v-if="current.stress > 9" class="afflicted"></div>
+
+        <div
+          v-if="current.hero"
+          class="stress"
+          :class="{red: current.stress > 9}"
+        >
+          <div v-for="_ in current.stress % 10"></div>
+        </div>
+
+        <div v-if="current.hero">
           <div
-            v-for="i in (2 + level)"
+            v-for="i in (2 + current.level)"
             class="mini-h ability"
-            :style="abilityCard(abilities[i-1])"
-            :class="{selected: abilities[i-1] >= 0}"
+            :style="abilityCard(current.abilities[i-1])"
+            :class="{selected: current.abilities[i-1] >= 0}"
           >
-            <select v-model="abilities[i-1]">
+            <select v-model="current.abilities[i-1]">
               <option v-for="(item, index) in abilitiesPool" :value="index">
                 {{ item }}
               </option>
             </select>
             <select
-              v-if="abilities[i-1] >= 0"
-              v-model="abilitiesLevels[abilities[i-1]]"
+              v-if="current.abilities[i-1] >= 0"
+              v-model="current.abilitiesLevels[current.abilities[i-1]]"
             >
               <option v-for="item in 3" :value="item">
                 {{ 'I'.repeat(item) }}
@@ -111,14 +138,14 @@
       <section class="status">
         <div class="diseases">
           <div class="mini-v disease" :style="diseaseCard">
-            <select v-if="hero" v-model="disease">
+            <select v-if="current.hero" v-model="current.disease">
               <option value="">None</option>
               <option v-for="item in diseases" :value="item">{{ item }}</option>
             </select>
           </div>
 
           <div class="mini-v virtue" :style="afflictionCard">
-            <select v-if="hero" v-model="affliction">
+            <select v-if="current.hero" v-model="current.affliction">
               <option value="">None</option>
               <optgroup label="Afflictions">
                 <option v-for="item in afflictions" :value="item">
@@ -138,9 +165,9 @@
           <div
             v-for="i in 3"
             class="mini-v quirk"
-            :style="quirkCard(quirks[i-1])"
+            :style="quirkCard(current.quirks[i-1])"
           >
-            <select v-model="quirks[i-1]" v-if="hero">
+            <select v-model="current.quirks[i-1]" v-if="current.hero">
               <option value="">None</option>
               <optgroup label="Negative">
                 <option v-for="item in negatives" :value="item">
