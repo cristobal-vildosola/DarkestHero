@@ -12,8 +12,26 @@ const doubleCardsBottom = [
     { url: 'hero2.png', size: '200%', x: '0', y: '100%' },
     { url: 'hero.png', size: '200%', x: '100%', y: '100%' },
 ]
+const doubleCardsTop = [
+    { url: 'hero.png', size: '200%', x: '0', y: '0' },
+    { url: 'hero2.png', size: '200%', x: '0', y: '0' },
+    { url: 'hero.png', size: '200%', x: '100%', y: '0' },
+]
 
 const heroes = {
+    'antiquarian': {
+        cardSprite: doubleCardsBottom,
+        abilities: [
+            'Nervous Stab',
+            'Festering Vapours',
+            'Get Down!',
+            'Flashpowder',
+            'Fortifying Vapours',
+            'Invigorating Vapours',
+            'Protect Me'
+        ],
+        abilitiesSize: [7, 3],
+    },
     'arbalest': {
         cardSprite: separateCards,
         abilities: [
@@ -24,6 +42,58 @@ const heroes = {
             'Blindfire',
             'Battlefield Bandage',
             'Rallying Flare'
+        ],
+        abilitiesSize: [10, 7],
+    },
+    'crusader': {
+        cardSprite: separateCards,
+        abilities: [
+            'Smite',
+            'Zealous Accusation',
+            'Stunning Blow',
+            'Bulwark of Faith',
+            'Battle Heal',
+            'Holy Lance',
+            'Inspiring Cry'
+        ],
+        abilitiesSize: [10, 7],
+    },
+    'flagellant': {
+        cardSprite: doubleCardsBottom,
+        abilities: [
+            'Punish',
+            'Rain of Sorrows',
+            'Exsanguinate',
+            'Reclaim',
+            'Redeem',
+            'Endure',
+            'Suffer'
+        ],
+        abilitiesSize: [7, 3],
+    },
+    'hellion': {
+        cardSprite: separateCards,
+        abilities: [
+            'Wicked Hack',
+            'Iron Swan',
+            'Barbaric YAWP',
+            'If It Bleeds',
+            'Breakthrough',
+            'Adrenaline Rush',
+            'Bleed Out'
+        ],
+        abilitiesSize: [10, 7],
+    },
+    'highwayman': {
+        cardSprite: separateCards,
+        abilities: [
+            'Wicked Slice',
+            'Pistol Shot',
+            'Point Blank Shot',
+            'Grapeshot Blast',
+            'Tracking Shot',
+            'Duelist\'s Advance',
+            'Open Vein'
         ],
         abilitiesSize: [10, 7],
     },
@@ -40,18 +110,96 @@ const heroes = {
         ],
         abilitiesSize: [7, 3],
     },
-    'palceholder': { // TODO
+    'jester': {
         cardSprite: separateCards,
         abilities: [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            ''
+            'Dirk Stab',
+            'Harvest',
+            'Finale',
+            'Solo',
+            'Slice Off',
+            'Battle Ballad',
+            'Inspiring Tune'
+        ],
+        abilitiesSize: [10, 7],
+    },
+    'leper': {
+        cardSprite: doubleCardsTop,
+        abilities: [
+            'Chop',
+            'Hew',
+            'Purge',
+            'Revenge',
+            'Withstand',
+            'Solemnity',
+            'Intimidate'
         ],
         abilitiesSize: [7, 3],
+    },
+    'man_at_arms': {
+        cardSprite: doubleCardsTop,
+        abilities: [
+            'Crush',
+            'Rampart',
+            'Bellow',
+            'Defender',
+            'Retribution',
+            'Command',
+            'Bolster'
+        ],
+        abilitiesSize: [7, 3],
+    },
+    'occultist': {
+        cardSprite: separateCards,
+        abilities: [
+            'Sacrificial Stab',
+            'Abyssal Artilery',
+            'Weakening Curse',
+            'Wyrd Reconstruction',
+            'Vulnerability Hex',
+            'Hands from the Abyss',
+            'Daemons\' Pull'
+        ],
+        abilitiesSize: [10, 7],
+    },
+    'plague_doctor': {
+        cardSprite: separateCards,
+        abilities: [
+            'Noxious Blast',
+            'Plague Grenade',
+            'Blinding Gas',
+            'Incision',
+            'Battlefield Medicine',
+            'Emboldening Vapours',
+            'Disorienting Blast'
+        ],
+        abilitiesSize: [10, 7],
+    },
+    'shieldbreaker': {
+        cardSprite: doubleCardsTop,
+        abilities: [
+            'Pierce',
+            'Puncture',
+            'Adder\'s Kiss',
+            'Impale',
+            'Expose',
+            'Captivate',
+            'Serpent Sway'
+        ],
+        abilitiesSize: [7, 3],
+    },
+    'vestal': {
+        cardSprite: separateCards,
+        abilities: [
+            'Mace Bash',
+            'Judgement',
+            'Dazzling Light',
+            'Grace',
+            'Divine Comfort',
+            'Illumination',
+            'Hand of Light'
+        ],
+        abilitiesSize: [10, 7],
     },
 }
 

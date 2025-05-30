@@ -3,9 +3,6 @@
   <meta charset="UTF-8" />
 
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="index.css" />
 
   <title>Darkest Hero - by Piña</title>
@@ -32,33 +29,15 @@
         Level:
         <select v-model="level">
           <option v-for="item in 3" :value="item">
-            {{ item }}
+            {{ 'I'.repeat(item) }}
           </option>
         </select>
       </div>
 
       <div class="content">
-        <div class="trinkets" :style="{ marginTop: TRINKET_MARGIN[level] }">
-          <div class="mini-h trinket">
+        <div class="trinkets" :style="{ marginTop: TRINKET_MARGIN[level-1] }">
+          <div v-for="i in level" class="mini-h trinket">
             <select v-model="trinkets[0]">
-              <option value="" style="display: none;">Select</option>
-              <option v-for="item in trinketsPool" :value="item">
-                {{ item }}
-              </option>
-            </select>
-          </div>
-
-          <div class="mini-h trinket" v-if="level > 1">
-            <select v-model="trinkets[1]">
-              <option value="" style="display: none;">Select</option>
-              <option v-for="item in trinketsPool" :value="item">
-                {{ item }}
-              </option>
-            </select>
-          </div>
-
-          <div class="mini-h trinket" v-if="level > 2">
-            <select v-model="trinkets[2]">
               <option value="" style="display: none;">Select</option>
               <option v-for="item in trinketsPool" :value="item">
                 {{ item }}
@@ -72,73 +51,17 @@
         <div class="board">
           <div class="stress"></div>
 
-          <div>
-            <div class="mini-h ability" :style="abilityCard(abilities[0])">
-              <select v-model="abilities[0]">
+          <div abilities>
+            <div v-for="i in (2 + level)" class="mini-h ability" :style="abilityCard(abilities[i-1])">
+              <select v-model="abilities[i-1]">
                 <option value="-1" style="display: none;">Select</option>
                 <option v-for="(item, index) in abilitiesPool" :value="index">
                   {{ item }}
                 </option>
               </select>
-              <select v-if="abilities[0] >= 0" v-model="abilitiesLevels[abilities[0]]">
+              <select v-if="abilities[i-1] >= 0" v-model="abilitiesLevels[abilities[i-1]]">
                 <option v-for="item in 3" :value="item">
-                  {{ item }}
-                </option>
-              </select>
-            </div>
-
-            <div class="mini-h ability" :style="abilityCard(abilities[1])">
-              <select v-model="abilities[1]">
-                <option value="-1" style="display: none;">Select</option>
-                <option v-for="(item, index) in abilitiesPool" :value="index">
-                  {{ item }}
-                </option>
-              </select>
-              <select v-if="abilities[1] >= 0" v-model="abilitiesLevels[abilities[1]]">
-                <option v-for="item in 3" :value="item">
-                  {{ item }}
-                </option>
-              </select>
-            </div>
-
-            <div class="mini-h ability" :style="abilityCard(abilities[2])">
-              <select v-model="abilities[2]">
-                <option value="-1" style="display: none;">Select</option>
-                <option v-for="(item, index) in abilitiesPool" :value="index">
-                  {{ item }}
-                </option>
-              </select>
-              <select v-if="abilities[2] >= 0" v-model="abilitiesLevels[abilities[2]]">
-                <option v-for="item in 3" :value="item">
-                  {{ item }}
-                </option>
-              </select>
-            </div>
-
-            <div class="mini-h ability" :style="abilityCard(abilities[3])" v-if="level > 1">
-              <select v-model="abilities[3]">
-                <option value="-1" style="display: none;">Select</option>
-                <option v-for="(item, index) in abilitiesPool" :value="index">
-                  {{ item }}
-                </option>
-              </select>
-              <select v-if="abilities[3] >= 0" v-model="abilitiesLevels[abilities[3]]">
-                <option v-for="item in 3" :value="item">
-                  {{ item }}
-                </option>
-              </select>
-            </div>
-
-            <div class="mini-h ability" :style="abilityCard(abilities[4])" v-if="level > 2">
-              <select v-model="abilities[4]">
-                <option value="-1" style="display: none;">Select</option>
-                <option v-for="(item, index) in abilitiesPool" :value="index">
-                  {{ item }}
-                </option>
-              </select>
-              <select v-if="abilities[4] >= 0" v-model="abilitiesLevels[abilities[4]]">
-                <option v-for="item in 3" :value="item">
-                  Level {{ item }}
+                  {{ 'I'.repeat(item) }}
                 </option>
               </select>
             </div>
@@ -174,40 +97,8 @@
           </div>
 
           <div class="quirks">
-            <div class="mini-v quirk" :style="quirkCard(quirks[0])">
-              <select v-model="quirks[0]">
-                <option value="">None</option>
-                <optgroup label="Negative">
-                  <option v-for="item in negatives" :value="item">
-                    {{ item }}
-                  </option>
-                </optgroup>
-                <optgroup label="Positive">
-                  <option v-for="item in positives" :value="item">
-                    {{ item }}
-                  </option>
-                </optgroup>
-              </select>
-            </div>
-
-            <div class="mini-v quirk" :style="quirkCard(quirks[1])">
-              <select v-model="quirks[1]">
-                <option value="">None</option>
-                <optgroup label="Negative">
-                  <option v-for="item in negatives" :value="item">
-                    {{ item }}
-                  </option>
-                </optgroup>
-                <optgroup label="Positive">
-                  <option v-for="item in positives" :value="item">
-                    {{ item }}
-                  </option>
-                </optgroup>
-              </select>
-            </div>
-
-            <div class="mini-v quirk" :style="quirkCard(quirks[2])">
-              <select v-model="quirks[2]">
+            <div v-for="i in 3" class="mini-v quirk" :style="quirkCard(quirks[i-1])">
+              <select v-model="quirks[i-1]">
                 <option value="">None</option>
                 <optgroup label="Negative">
                   <option v-for="item in negatives" :value="item">
