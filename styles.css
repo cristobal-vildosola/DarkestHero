@@ -14,6 +14,7 @@ html {
   box-sizing: border-box;
   background-repeat: no-repeat;
   touch-action: manipulation;
+  outline: none;
 }
 
 header {
@@ -32,23 +33,22 @@ header {
 }
 
 select.hero {
-  font-size: calc(2 * var(--unit));
+  font-size: calc(2.5 * var(--unit));
   background: #0b0704;
-  border-color: white;
-  color: yellow;
-  border-radius: var(--unit);
+  color: #fedfae;
+  border-radius: var(--unit) 0 0 var(--unit);
   font-family: serif;
+  margin-right: calc(-2.5 * var(--unit));
 }
 select.level {
-  background: grey;
-  width: calc(5 * var(--unit));
-  height: calc(5 * var(--unit));
-  border: 5px solid yellow;
+  background: #0b0704;
+  width: calc(7 * var(--unit));
+  height: calc(7 * var(--unit));
   border-radius: 50%;
   text-align: center;
-  color: white;
+  color: #fedfae;
   font-family: serif;
-  font-size: calc(2 * var(--unit));
+  font-size: calc(3 * var(--unit));
 }
 
 main {
@@ -73,7 +73,6 @@ main {
 .mini-v {
   background-size: 100%;
   border-radius: calc(2 * var(--unit));
-  box-shadow: 0 0 var(--unit) rgb(103 103 43 / 50%);
   display: flex;
   justify-content: stretch;
   align-items: stretch;
@@ -96,18 +95,21 @@ button {
   touch-action: manipulation;
   padding: 0;
 }
+
 /* ------------ trinkets ------------ */
 .trinkets {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-right: 10px;
 }
 
 .trinket {
   margin-bottom: calc(2.2 * var(--unit));
   display: flex;
   align-items: stretch;
+  transform: rotate(0deg);
+  transition-duration: 0.5s;
+  transition-property: transform;
 }
 .trinket > div {
   display: flex;
@@ -191,15 +193,18 @@ button {
   border-radius: var(--unit);
 }
 
-.heroCard button {
+.heroCard button,
+.stressCount button {
   position: absolute;
   height: 100%;
 }
-.heroCard button:first-child {
+.heroCard button:first-child,
+.stressCount button:first-child {
   left: 0;
   right: 50%;
 }
-.heroCard button:last-child {
+.heroCard button:last-child,
+.stressCount button:last-child {
   left: 50%;
   right: 0;
 }
@@ -211,10 +216,12 @@ button {
   border-radius: 0 100% 100% 0 / 0 50% 50% 0;
 }
 
-.xp button:first-child {
+.xp button:first-child,
+.stressCount button:first-child {
   border-radius: var(--unit) 0 0 var(--unit);
 }
-.xp button:last-child {
+.xp button:last-child,
+.stressCount button:last-child {
   border-radius: 0 var(--unit) var(--unit) 0;
 }
 
@@ -226,13 +233,50 @@ button {
   min-width: calc(76 * var(--unit));
 }
 
+.stressCount {
+  position: absolute;
+  left: 2%;
+  top: 4%;
+  height: 6.3%;
+  width: 10%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: calc(3.5 * var(--unit));
+}
+
+.afflicted {
+  position: absolute;
+  left: 12.8%;
+  top: 4%;
+  height: 6.3%;
+  width: 7.3%;
+  background-color: rgba(139, 0, 0, 0.7);
+}
+
 .stress {
   position: absolute;
-  left: 12.3%;
+  left: 21%;
   top: 4.2%;
-  height: calc(7 * var(--unit));
-  width: calc(58.3 * var(--unit));
-  background-color: #fff5;
+  height: 7.7%;
+  width: 68%;
+  display: flex;
+}
+.stress > div {
+  width: 10%;
+  padding: 1%;
+}
+.stress > div::after {
+  display: block;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #dddddd;
+}
+.stress.red > div::after {
+  background-color: darkred;
 }
 
 .ability {
@@ -274,9 +318,8 @@ button {
   left: 47.7%;
 }
 
-/* ------------ quirks ------------ */
+/* ------------ statuses ------------ */
 .status {
-  margin-left: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -287,12 +330,11 @@ button {
 }
 
 .disease {
-  margin-right: 10px;
+  margin-right: 5px;
   background-image: url(img/game/disease.jpg);
 }
 
 .virtue {
-  margin-right: 10px;
   background-image: url(img/game/virtue.jpg);
 }
 
@@ -302,6 +344,6 @@ button {
 }
 
 .quirk {
-  margin-right: 10px;
+  margin-right: 5px;
   background-image: url(img/game/quirk.jpg);
 }
