@@ -73,7 +73,7 @@
           <div class="stress"></div>
 
           <div>
-            <div class="mini-h ability" :style="abilityStyle(abilities[0])">
+            <div class="mini-h ability" :style="abilityCard(abilities[0])">
               <select v-model="abilities[0]">
                 <option value="-1" style="display: none;">Select</option>
                 <option v-for="(item, index) in abilitiesPool" :value="index">
@@ -87,7 +87,7 @@
               </select>
             </div>
 
-            <div class="mini-h ability" :style="abilityStyle(abilities[1])">
+            <div class="mini-h ability" :style="abilityCard(abilities[1])">
               <select v-model="abilities[1]">
                 <option value="-1" style="display: none;">Select</option>
                 <option v-for="(item, index) in abilitiesPool" :value="index">
@@ -101,7 +101,7 @@
               </select>
             </div>
 
-            <div class="mini-h ability" :style="abilityStyle(abilities[2])">
+            <div class="mini-h ability" :style="abilityCard(abilities[2])">
               <select v-model="abilities[2]">
                 <option value="-1" style="display: none;">Select</option>
                 <option v-for="(item, index) in abilitiesPool" :value="index">
@@ -115,7 +115,7 @@
               </select>
             </div>
 
-            <div class="mini-h ability" :style="abilityStyle(abilities[3])" v-if="level > 1">
+            <div class="mini-h ability" :style="abilityCard(abilities[3])" v-if="level > 1">
               <select v-model="abilities[3]">
                 <option value="-1" style="display: none;">Select</option>
                 <option v-for="(item, index) in abilitiesPool" :value="index">
@@ -129,7 +129,7 @@
               </select>
             </div>
 
-            <div class="mini-h ability" :style="abilityStyle(abilities[4])" v-if="level > 2">
+            <div class="mini-h ability" :style="abilityCard(abilities[4])" v-if="level > 2">
               <select v-model="abilities[4]">
                 <option value="-1" style="display: none;">Select</option>
                 <option v-for="(item, index) in abilitiesPool" :value="index">
@@ -147,50 +147,78 @@
 
         <div class="right">
           <div class="diseases">
-            <div class="mini-v disease">
+            <div class="mini-v disease" :style="diseaseCard">
               <select v-model="disease">
-                <option value="" style="display: none;">Select</option>
+                <option value="">None</option>
                 <option v-for="item in diseases" :value="item">
                   {{ item }}
                 </option>
               </select>
             </div>
 
-            <div class="mini-v virtue">
+            <div class="mini-v virtue" :style="afflictionCard">
               <select v-model="affliction">
-                <option value="" style="display: none;">Select</option>
-                <option v-for="item in afflictions" :value="item">
-                  {{ item }}
-                </option>
+                <option value="">None</option>
+                <optgroup label="Afflictions">
+                  <option v-for="item in afflictions" :value="item">
+                    {{ item }}
+                  </option>
+                </optgroup>
+                <optgroup label="Virtues">
+                  <option v-for="item in virtues" :value="item">
+                    {{ item }}
+                  </option>
+                </optgroup>
               </select>
             </div>
           </div>
 
           <div class="quirks">
-            <div class="mini-v quirk">
+            <div class="mini-v quirk" :style="quirkCard(quirks[0])">
               <select v-model="quirks[0]">
-                <option value="" style="display: none;">Select</option>
-                <option v-for="item in quirksPool" :value="item">
-                  {{ item }}
-                </option>
+                <option value="">None</option>
+                <optgroup label="Negative">
+                  <option v-for="item in negatives" :value="item">
+                    {{ item }}
+                  </option>
+                </optgroup>
+                <optgroup label="Positive">
+                  <option v-for="item in positives" :value="item">
+                    {{ item }}
+                  </option>
+                </optgroup>
               </select>
             </div>
 
-            <div class="mini-v quirk">
+            <div class="mini-v quirk" :style="quirkCard(quirks[1])">
               <select v-model="quirks[1]">
-                <option value="" style="display: none;">Select</option>
-                <option v-for="item in quirksPool" :value="item">
-                  {{ item }}
-                </option>
+                <option value="">None</option>
+                <optgroup label="Negative">
+                  <option v-for="item in negatives" :value="item">
+                    {{ item }}
+                  </option>
+                </optgroup>
+                <optgroup label="Positive">
+                  <option v-for="item in positives" :value="item">
+                    {{ item }}
+                  </option>
+                </optgroup>
               </select>
             </div>
 
-            <div class="mini-v quirk">
+            <div class="mini-v quirk" :style="quirkCard(quirks[2])">
               <select v-model="quirks[2]">
-                <option value="" style="display: none;">Select</option>
-                <option v-for="item in quirksPool" :value="item">
-                  {{ item }}
-                </option>
+                <option value="">None</option>
+                <optgroup label="Negative">
+                  <option v-for="item in negatives" :value="item">
+                    {{ item }}
+                  </option>
+                </optgroup>
+                <optgroup label="Positive">
+                  <option v-for="item in positives" :value="item">
+                    {{ item }}
+                  </option>
+                </optgroup>
               </select>
             </div>
           </div>
@@ -199,5 +227,6 @@
     </div>
   </main>
 
-  <script src="index.js"></script>
+  <script src="constants.js"></script>
+  <script src="app.js"></script>
 </body>
