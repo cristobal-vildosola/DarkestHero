@@ -96,25 +96,47 @@ html {
 
 .wounds {
   position: absolute;
-  top: 20%;
-  right: 1%;
-  font-size: 20px;
+  top: 25%;
+  right: 4%;
 }
 
 .wounds input {
-  width: 100px;
-  height: 100px;
+  width: 11vh;
+  height: 11vh;
 
-  font-size: 32px;
-  text-align: center;
   color: darkred;
+  text-align: center;
+  font-size: 3.5vh;
+  padding-left: 2vh;
 
   border: 0;
   background: transparent;
   background-image: url(img/game/wounds.png);
   background-size: 100%;
   border-radius: 100%;
-  padding-left: 20px;
+}
+
+.xp {
+  position: absolute;
+  top: 39%;
+  right: 6%;
+}
+
+.xp input {
+  width: 9vh;
+  height: 7vh;
+
+  font-size: 3.5vh;
+  color: #fedfae;
+  padding-left: 1vh;
+
+  border: 0;
+  background: #0b0704;
+  background-image: url(img/game/xp.png);
+  background-size: 7vh;
+  background-position: right;
+  background-repeat: no-repeat;
+  border-radius: 1vh;
 }
 
 /* ------------ abilities ------------ */
