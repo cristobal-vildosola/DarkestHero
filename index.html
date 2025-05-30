@@ -9,121 +9,133 @@
   <link rel="icon" type="image/x-icon" href="img/pina.png" />
   <link rel="apple-touch-icon" href="img/pina.png" />
 
-  <link rel="manifest" href="manifest.json" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link
+    rel="manifest"
+    href="manifest.json"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
   <meta name="apple-mobile-web-app-status-bar" content="#000" />
   <meta name="theme-color" content="#000" />
 </head>
 
 <body>
-  <main>
-    <div id="app">
-      <div class="header">
-        Hero:
-        <select v-model="hero" class="hero">
-          <option value="" style="display: none;">select your hero</option>
-          <option v-for="item in heroesPool" :value="item" class="hero">
-            {{ item.replaceAll('_', ' ') }}
-          </option>
-        </select>
+  <div id="app">
+    <header>
+      <select v-model="hero" class="hero">
+        <option value="" style="display: none">select your hero</option>
+        <option v-for="item in heroesPool" :value="item" class="hero">
+          {{ item.replaceAll('_', ' ') }}
+        </option>
+      </select>
+      <select v-model="level" class="level">
+        <option v-for="item in 3" :value="item">{{ 'I'.repeat(item) }}</option>
+      </select>
+    </header>
 
-        Level:
-        <select v-model="level">
-          <option v-for="item in 3" :value="item">
-            {{ 'I'.repeat(item) }}
-          </option>
-        </select>
-      </div>
+    <main>
+      <section class="trinkets" :style="{ marginTop: TRINKET_MARGIN[level-1] }">
+        <div v-for="i in level" class="mini-h trinket">
+          <select v-model="trinkets[0]" v-if="hero">
+            <option value="" style="display: none">Select</option>
+            <option v-for="item in trinketsPool" :value="item">
+              {{ item }}
+            </option>
+          </select>
+        </div>
+      </section>
 
-      <div class="content">
-        <div class="trinkets" :style="{ marginTop: TRINKET_MARGIN[level-1] }">
-          <div v-for="i in level" class="mini-h trinket">
-            <select v-model="trinkets[0]">
-              <option value="" style="display: none;">Select</option>
-              <option v-for="item in trinketsPool" :value="item">
+      <section class="heroCard" :style="heroCard">
+        <div v-if="hero" class="wounds">
+          <button @click="wounds > 0 ? wounds-- : null"></button>
+          <span>{{ wounds }}</span>
+          <button @click="wounds++"></button>
+        </div>
+        <div v-if="hero" class="xp">
+          <button @click="xp > 0 ? xp-- : null"></button>
+          <span>{{ xp }}</span>
+          <button @click="xp++"></button>
+        </div>
+      </section>
+
+      <section class="board">
+        <div v-if="hero" class="stress"></div>
+
+        <div v-if="hero" abilities>
+          <div
+            v-for="i in (2 + level)"
+            class="mini-h ability"
+            :style="abilityCard(abilities[i-1])"
+            :class="{selected: abilities[i-1] >= 0}"
+          >
+            <select v-model="abilities[i-1]">
+              <option value="-1" style="display: none">Select</option>
+              <option v-for="(item, index) in abilitiesPool" :value="index">
                 {{ item }}
+              </option>
+            </select>
+            <select
+              v-if="abilities[i-1] >= 0"
+              v-model="abilitiesLevels[abilities[i-1]]"
+            >
+              <option v-for="item in 3" :value="item">
+                {{ 'I'.repeat(item) }}
               </option>
             </select>
           </div>
         </div>
+      </section>
 
-        <div class="heroCard" :style="heroCard">
-          <div v-if="hero" class="wounds">
-            <input type="number" v-model="wounds" min="0">
+      <section class="status">
+        <div class="diseases">
+          <div class="mini-v disease" :style="diseaseCard">
+            <select v-if="hero" v-model="disease">
+              <option value="">None</option>
+              <option v-for="item in diseases" :value="item">{{ item }}</option>
+            </select>
           </div>
-          <div v-if="hero" class="xp">
-            <input type="number" v-model="xp" min="0">
-          </div>
-        </div>
 
-        <div class="board">
-          <div class="stress"></div>
-
-          <div abilities>
-            <div v-for="i in (2 + level)" class="mini-h ability" :style="abilityCard(abilities[i-1])">
-              <select v-model="abilities[i-1]">
-                <option value="-1" style="display: none;">Select</option>
-                <option v-for="(item, index) in abilitiesPool" :value="index">
+          <div class="mini-v virtue" :style="afflictionCard">
+            <select v-if="hero" v-model="affliction">
+              <option value="">None</option>
+              <optgroup label="Afflictions">
+                <option v-for="item in afflictions" :value="item">
                   {{ item }}
                 </option>
-              </select>
-              <select v-if="abilities[i-1] >= 0" v-model="abilitiesLevels[abilities[i-1]]">
-                <option v-for="item in 3" :value="item">
-                  {{ 'I'.repeat(item) }}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="right">
-          <div class="diseases">
-            <div class="mini-v disease" :style="diseaseCard">
-              <select v-model="disease">
-                <option value="">None</option>
-                <option v-for="item in diseases" :value="item">
+              </optgroup>
+              <optgroup label="Virtues">
+                <option v-for="item in virtues" :value="item">
                   {{ item }}
                 </option>
-              </select>
-            </div>
-
-            <div class="mini-v virtue" :style="afflictionCard">
-              <select v-model="affliction">
-                <option value="">None</option>
-                <optgroup label="Afflictions">
-                  <option v-for="item in afflictions" :value="item">
-                    {{ item }}
-                  </option>
-                </optgroup>
-                <optgroup label="Virtues">
-                  <option v-for="item in virtues" :value="item">
-                    {{ item }}
-                  </option>
-                </optgroup>
-              </select>
-            </div>
-          </div>
-
-          <div class="quirks">
-            <div v-for="i in 3" class="mini-v quirk" :style="quirkCard(quirks[i-1])">
-              <select v-model="quirks[i-1]">
-                <option value="">None</option>
-                <optgroup label="Negative">
-                  <option v-for="item in negatives" :value="item">
-                    {{ item }}
-                  </option>
-                </optgroup>
-                <optgroup label="Positive">
-                  <option v-for="item in positives" :value="item">
-                    {{ item }}
-                  </option>
-                </optgroup>
-              </select>
-            </div>
+              </optgroup>
+            </select>
           </div>
         </div>
-      </div>
-    </div>
-  </main>
+
+        <div class="quirks">
+          <div
+            v-for="i in 3"
+            class="mini-v quirk"
+            :style="quirkCard(quirks[i-1])"
+          >
+            <select v-model="quirks[i-1]" v-if="hero">
+              <option value="">None</option>
+              <optgroup label="Negative">
+                <option v-for="item in negatives" :value="item">
+                  {{ item }}
+                </option>
+              </optgroup>
+              <optgroup label="Positive">
+                <option v-for="item in positives" :value="item">
+                  {{ item }}
+                </option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
 
   <script src="constants.js"></script>
   <script src="app.js"></script>
