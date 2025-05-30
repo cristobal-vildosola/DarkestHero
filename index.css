@@ -3,11 +3,11 @@ html {
   margin: 0;
   padding: 0;
   overflow: auto hidden;
-  font-family: 'sans-serif';
+  font-family: "sans-serif";
   background-color: black;
   color: darkred;
 
-  --unit: 1vh
+  --unit: 1vh;
 }
 
 * {
@@ -15,7 +15,7 @@ html {
   background-repeat: no-repeat;
 }
 
-.header {
+header {
   position: absolute;
   top: 0;
   left: 0;
@@ -26,12 +26,31 @@ html {
   justify-content: center;
   align-items: center;
 }
-
 .hero {
   text-transform: capitalize;
 }
 
-.content {
+select.hero {
+  font-size: calc(2 * var(--unit));
+  background: #0b0704;
+  border-color: white;
+  color: yellow;
+  border-radius: var(--unit);
+  font-family: serif;
+}
+select.level {
+  background: grey;
+  width: calc(5 * var(--unit));
+  height: calc(5 * var(--unit));
+  border: 5px solid yellow;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+  font-family: serif;
+  font-size: calc(2 * var(--unit));
+}
+
+main {
   margin-top: calc(10 * var(--unit));
   height: calc(90 * var(--unit));
   display: flex;
@@ -52,15 +71,20 @@ html {
 .mini-h,
 .mini-v {
   background-size: 100%;
-  border-radius: 2vh;
-  box-shadow: 0 0 1vh rgb(103 103 43 / 50%);
-
+  border-radius: calc(2 * var(--unit));
+  box-shadow: 0 0 var(--unit) rgb(103 103 43 / 50%);
   display: flex;
-  justify-content: center;
-  align-items: end;
-  padding: 2px;
+  justify-content: stretch;
+  align-items: stretch;
 }
 
+.mini-h select,
+.mini-v select {
+  flex: 1;
+  border-radius: calc(2 * var(--unit));
+  background: #fff2;
+  color: transparent;
+}
 /* ------------ trinkets ------------ */
 .trinkets {
   display: flex;
@@ -85,7 +109,6 @@ html {
   background-image: url(img/game/trinket3.jpg);
 }
 
-
 /* ------------ hero ------------ */
 .heroCard {
   min-width: calc(50 * var(--unit));
@@ -98,16 +121,14 @@ html {
   position: absolute;
   top: 25%;
   right: 4%;
-}
+  width: calc(11 * var(--unit));
+  height: calc(11 * var(--unit));
 
-.wounds input {
-  width: 11vh;
-  height: 11vh;
-
-  color: darkred;
-  text-align: center;
-  font-size: 3.5vh;
-  padding-left: 2vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: red;
+  font-size: calc(3.5 * var(--unit));
 
   border: 0;
   background: transparent;
@@ -120,23 +141,53 @@ html {
   position: absolute;
   top: 39%;
   right: 6%;
-}
+  width: calc(9 * var(--unit));
+  height: calc(7 * var(--unit));
 
-.xp input {
-  width: 9vh;
-  height: 7vh;
-
-  font-size: 3.5vh;
+  display: flex;
+  align-items: center;
   color: #fedfae;
-  padding-left: 1vh;
+  font-size: calc(3.5 * var(--unit));
+  padding-left: calc(1.5 * var(--unit));
 
   border: 0;
   background: #0b0704;
   background-image: url(img/game/xp.png);
-  background-size: 7vh;
+  background-size: calc(7 * var(--unit));
   background-position: right;
   background-repeat: no-repeat;
-  border-radius: 1vh;
+  border-radius: var(--unit);
+}
+
+.heroCard button {
+  position: absolute;
+  height: 100%;
+  background: #fff2;
+  cursor: pointer;
+  border: none;
+  border: 1px solid #fff2;
+}
+.heroCard button:first-child {
+  left: 0;
+  right: 50%;
+}
+.heroCard button:last-child {
+  left: 50%;
+  right: 0;
+}
+
+.wounds button:first-child {
+  border-radius: 100% 0 0 100% / 50% 0 0 50%;
+}
+.wounds button:last-child {
+  border-radius: 0 100% 100% 0 / 0 50% 50% 0;
+}
+
+.xp button:first-child {
+  border-radius: var(--unit) 0 0 var(--unit);
+}
+.xp button:last-child {
+  border-radius: 0 var(--unit) var(--unit) 0;
 }
 
 /* ------------ abilities ------------ */
@@ -158,6 +209,16 @@ html {
 
 .ability {
   position: absolute;
+}
+.ability select:not(:last-child) {
+  flex: 2;
+  margin-right: -1px;
+  border-bottom-right-radius: var(--unit);
+  border-top-right-radius: var(--unit);
+}
+.ability select + select {
+  border-bottom-left-radius: var(--unit);
+  border-top-left-radius: var(--unit);
 }
 
 .ability:nth-child(1) {
@@ -186,7 +247,7 @@ html {
 }
 
 /* ------------ quirks ------------ */
-.right {
+.status {
   margin-left: 10px;
   display: flex;
   flex-direction: column;
