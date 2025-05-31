@@ -2,7 +2,7 @@ body,
 html {
   margin: 0;
   padding: 0;
-  overflow: auto hidden;
+  overflow: auto;
   font-family: "sans-serif";
   background-color: black;
   color: darkred;
@@ -11,7 +11,6 @@ html {
 }
 * {
   box-sizing: border-box;
-  background-repeat: no-repeat;
   outline: none;
 }
 
@@ -64,6 +63,7 @@ select::-ms-expand {
   display: flex;
   justify-content: stretch;
   align-items: stretch;
+  background-repeat: no-repeat;
 }
 .mini-h select,
 .mini-v select {
@@ -80,9 +80,8 @@ header {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: calc(10 * var(--unit));
-
+  width: 100%;
+  height: 7vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,47 +91,56 @@ header {
   text-transform: capitalize;
 }
 select.hero {
-  font-size: calc(2.5 * var(--unit));
+  font-size: 2.5vh;
   background: #0b0704;
   color: #fedfae;
-  border-radius: var(--unit) 0 0 var(--unit);
-  margin-right: calc(-3 * var(--unit));
-  padding-right: calc(1 * var(--unit));
+  border-radius: 2vh 0 0 2vh;
+  margin-right: -1vh;
+  padding-left: 1vh;
+  padding-right: 2vh;
   text-align: center;
-  width: calc(22 * var(--unit));
 }
 select.level {
   background: #0b0704;
-  width: calc(7 * var(--unit));
-  height: calc(7 * var(--unit));
+  width: 5vh;
+  height: 5vh;
   border-radius: 50%;
   text-align: center;
   color: #fedfae;
-  font-size: calc(3 * var(--unit));
+  font-size: 3vh;
+  margin-right: 1vh;
 }
 select.hero option,
 select.level option {
   color: #fedfae;
 }
 
-.import,
-.export {
-  width: calc(5 * var(--unit));
-  height: calc(5 * var(--unit));
+header button {
+  width: 5vh;
+  height: 5vh;
   background: #0b0704;
   border-radius: 100%;
-  margin-left: 10px;
+  margin-right: 1vh;
 }
-.import::after,
-.export::after {
+header button:has(+ button) {
+  margin-right: .5vh;
+}
+header button::after {
   display: block;
   content: "";
   width: 70%;
   height: 70%;
   margin: 15%;
   background-size: 100%;
+  background-repeat: no-repeat;
   /* change color to #fedfae https://codepen.io/sosuke/pen/Pjoqqp */
   filter: invert(98%) sepia(36%) saturate(5358%) hue-rotate(298deg) brightness(117%) contrast(112%);
+}
+.zoomIn::after {
+  background-image: url(img/icons/zoom_in.svg);
+}
+.zoomOut::after {
+  background-image: url(img/icons/zoom_out.svg);
 }
 .import::after {
   background-image: url(img/icons/upload.svg);
@@ -142,7 +150,7 @@ select.level option {
 }
 
 main {
-  margin-top: calc(10 * var(--unit));
+  margin-top: 7vh;
   height: calc(90 * var(--unit));
   display: flex;
   align-items: stretch;

@@ -17,6 +17,9 @@
 <body>
   <div id="app">
     <header>
+      <button @click="zoom > .39 ? zoom -= .1 : null" class="zoomOut"></button>
+      <button @click="zoom < 1.41 ? zoom += .1 : null" class="zoomIn"></button>
+
       <select v-model="current.hero" class="hero">
         <option value="" disabled hidden>select hero</option>
         <option v-for="name in heroesPool" :value="name">
@@ -28,13 +31,12 @@
       </select>
 
       <button @click="exportSave()" class="export"></button>
-      <a id="export" style="display: none"></a>
-
       <button @click="importSave()" class="import"></button>
+      <a id="export" style="display: none"></a>
       <input type="file" accept=".json" id="import" @change="onFileUpload" style="display: none" />
     </header>
 
-    <main>
+    <main :style="{ '--unit': `${this.zoom}vh` }">
       <section class="trinkets" :style="{ marginTop: TRINKET_MARGIN[current.level-1] }">
         <div v-for="i in current.level" class="mini-h trinket" :class="{used: current.trinketStates[i-1]}"
           :style="trinketCard(current.trinkets[i-1])">

@@ -28,6 +28,7 @@ createApp({
       virtues: virtues,
       negatives: negatives,
       positives: positives,
+      zoom: 1,
 
       TRINKET_MARGIN: TRINKET_MARGIN,
     };
