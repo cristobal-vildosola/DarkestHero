@@ -31,6 +31,21 @@ button {
   touch-action: manipulation;
   padding: 0;
 }
+/* remove select caret */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+/* for IE10 */
+select::-ms-expand {
+  display: none;
+}
 
 
 /* ------------ cards ------------ */
@@ -56,6 +71,8 @@ button {
   border-radius: calc(2 * var(--unit));
   background: #fff2;
   color: transparent;
+  max-width: 100%;
+  width: 100%;
 }
 
 /* ------------ header ------------ */
@@ -161,11 +178,15 @@ main {
 .trinket select:not(:last-child) {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
+  max-width: 50%;
+  width: 50%;
 }
 .trinket button {
   flex: 1;
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
+  max-width: 50%;
+  width: 50%;
 }
 
 .trinket:nth-child(1) {
@@ -322,10 +343,14 @@ main {
   margin-right: -1px;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
+  max-width: 50%;
+  width: 50%;
 }
 .ability select + select {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
+  max-width: 50%;
+  width: 50%;
 }
 
 .ability:nth-child(1) {
