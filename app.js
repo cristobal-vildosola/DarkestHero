@@ -54,10 +54,11 @@ createApp({
       if (this.current.hero == "") return {};
 
       const card = heroes[this.current.hero].cardSprite[this.current.level - 1];
+
       return {
-        backgroundImage: `url('img/${this.current.hero}/${card.url}')`,
-        backgroundPosition: `${card.x} ${card.y}`,
-        backgroundSize: card.size,
+        backgroundImage: `url('img/${card.url(this.current.hero)}')`,
+        backgroundPosition: this.position(card.index, card.x, card.y),
+        backgroundSize: `${card.x * 100}%`,
       };
     },
     diseaseCard() {

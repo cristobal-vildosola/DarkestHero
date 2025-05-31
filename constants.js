@@ -6,22 +6,41 @@ const TRINKET_MARGIN = [
 ];
 
 const separateCards = [
-  { url: "hero1.jpg", size: "100%", x: "0", y: "0" },
-  { url: "hero2.jpg", size: "100%", x: "0", y: "0" },
-  { url: "hero3.jpg", size: "100%", x: "0", y: "0" },
+  { url: (hero) => `${hero}/hero1.jpg`, x: 1, y: 1, index: 0 },
+  { url: (hero) => `${hero}/hero2.jpg`, x: 1, y: 1, index: 0 },
+  { url: (hero) => `${hero}/hero3.jpg`, x: 1, y: 1, index: 0 },
 ];
 const doubleCardsBottom = [
-  { url: "hero.png", size: "200%", x: "0", y: "100%" },
-  { url: "hero2.png", size: "200%", x: "0", y: "100%" },
-  { url: "hero.png", size: "200%", x: "100%", y: "100%" },
+  { url: (hero) => `${hero}/hero.png`, x: 2, y: 2, index: 2 },
+  { url: (hero) => `${hero}/hero2.png`, x: 2, y: 2, index: 2 },
+  { url: (hero) => `${hero}/hero.png`, x: 2, y: 2, index: 3 },
 ];
 const doubleCardsTop = [
-  { url: "hero.png", size: "200%", x: "0", y: "0" },
-  { url: "hero2.png", size: "200%", x: "0", y: "0" },
-  { url: "hero.png", size: "200%", x: "100%", y: "0" },
+  { url: (hero) => `${hero}/hero.png`, x: 2, y: 2, index: 0 },
+  { url: (hero) => `${hero}/hero2.png`, x: 2, y: 2, index: 0 },
+  { url: (hero) => `${hero}/hero.png`, x: 2, y: 2, index: 1 },
 ];
+const megaCard1 = { url: () => `mega1.png`, x: 6, y: 4, index: 0 }
+const megaCard2 = { url: () => `mega2.png`, x: 6, y: 4, index: 0 }
 
 const heroes = {
+  abomination: {
+    cardSprite: [
+      { ...megaCard1, index: 20 },
+      { ...megaCard1, index: 21 },
+      { ...megaCard1, index: 22 },
+    ],
+    abilities: [
+      "Manacles",
+      "Beast's Bile",
+      "Absolution",
+      "Transform",
+      "Rake",
+      "Rage",
+      "Slam",
+    ],
+    abilitiesSize: [7, 3],
+  },
   antiquarian: {
     cardSprite: doubleCardsBottom,
     abilities: [
@@ -48,6 +67,23 @@ const heroes = {
     ],
     abilitiesSize: [10, 7],
   },
+  bounty_hunter: {
+    cardSprite: [
+      { ...megaCard1, index: 4 },
+      { ...megaCard2, index: 4 },
+      { ...megaCard1, index: 5 },
+    ],
+    abilities: [
+      "Collect Bounty",
+      "Mark for Death",
+      "Come Hither",
+      "Uppercut",
+      "Flashbang",
+      "Finish Him",
+      "Caltrops",
+    ],
+    abilitiesSize: [7, 3],
+  },
   crusader: {
     cardSprite: separateCards,
     abilities: [
@@ -71,6 +107,23 @@ const heroes = {
       "Redeem",
       "Endure",
       "Suffer",
+    ],
+    abilitiesSize: [7, 3],
+  },
+  grave_robber: {
+    cardSprite: [
+      { ...megaCard1, index: 16 },
+      { ...megaCard2, index: 16 },
+      { ...megaCard1, index: 17 },
+    ],
+    abilities: [
+      "Pick to the Face",
+      "Lunge",
+      "Flashing Daggers",
+      "Shadow Fade",
+      "Thrown Dagger",
+      "Poison Dart",
+      "Toxin Trickery",
     ],
     abilitiesSize: [7, 3],
   },
