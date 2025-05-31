@@ -18,7 +18,7 @@
   <div id="app">
     <header>
       <select v-model="current.hero" class="hero">
-        <option value="" style="display: none">select hero</option>
+        <option value="" disabled hidden>select hero</option>
         <option v-for="name in heroesPool" :value="name">
           {{ name.replaceAll('_', ' ') }}
         </option>
