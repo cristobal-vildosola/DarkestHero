@@ -9,24 +9,39 @@ html {
 
   --unit: 1vh;
 }
-
 * {
   box-sizing: border-box;
   background-repeat: no-repeat;
-  touch-action: manipulation;
   outline: none;
 }
+
 /* ------------ common ------------ */
+select,
+button {
+  cursor: pointer;
+  border: 1px solid #fff2;
+}
+select * {
+  color: initial;
+  font-size: initial;
+}
+button {
+  background: #fff2;
+  border-radius: calc(2 * var(--unit));
+  touch-action: manipulation;
+  padding: 0;
+}
+
+
+/* ------------ cards ------------ */
 .mini-h {
   height: calc(21 * var(--unit));
   width: calc(32.5 * var(--unit));
 }
-
 .mini-v {
   height: calc(32.5 * var(--unit));
   width: calc(21 * var(--unit));
 }
-
 .mini-h,
 .mini-v {
   background-size: 100%;
@@ -35,28 +50,12 @@ html {
   justify-content: stretch;
   align-items: stretch;
 }
-
 .mini-h select,
 .mini-v select {
   flex: 1;
   border-radius: calc(2 * var(--unit));
   background: #fff2;
   color: transparent;
-  font-size: 0;
-  cursor: pointer;
-}
-
-button {
-  background: #fff2;
-  border-radius: calc(2 * var(--unit));
-  cursor: pointer;
-  border: 1px solid #fff2;
-  touch-action: manipulation;
-  padding: 0;
-}
-
-select {
-  cursor: pointer;
 }
 
 /* ------------ header ------------ */
@@ -71,10 +70,10 @@ header {
   justify-content: center;
   align-items: center;
 }
+
 .hero {
   text-transform: capitalize;
 }
-
 select.hero {
   font-size: calc(2.5 * var(--unit));
   background: #0b0704;
@@ -94,6 +93,10 @@ select.level {
   color: #fedfae;
   font-size: calc(3 * var(--unit));
 }
+select.hero option,
+select.level option {
+  color: #fedfae;
+}
 
 .import,
 .export {
@@ -102,7 +105,6 @@ select.level {
   background: #0b0704;
   border-radius: 100%;
   margin-left: 10px;
-  border: 1px solid #fff7;
 }
 .import::after,
 .export::after {
@@ -113,8 +115,7 @@ select.level {
   margin: 15%;
   background-size: 100%;
   /* change color to #fedfae https://codepen.io/sosuke/pen/Pjoqqp */
-  filter: invert(98%) sepia(36%) saturate(5358%) hue-rotate(298deg)
-    brightness(117%) contrast(112%);
+  filter: invert(98%) sepia(36%) saturate(5358%) hue-rotate(298deg) brightness(117%) contrast(112%);
 }
 .import::after {
   background-image: url(img/icons/upload.svg);
@@ -230,6 +231,7 @@ main {
 .stressCount button {
   position: absolute;
   height: 100%;
+  width: 50%;
 }
 .heroCard button:first-child,
 .stressCount button:first-child {
