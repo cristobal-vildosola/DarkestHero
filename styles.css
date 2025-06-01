@@ -3,7 +3,7 @@ html {
   margin: 0;
   padding: 0;
   overflow: auto;
-  font-family: "sans-serif";
+  font-family: serif;
   background-color: black;
   color: darkred;
 
@@ -16,9 +16,11 @@ html {
 
 /* ------------ common ------------ */
 select,
-button {
+button,
+label {
   cursor: pointer;
   border: 1px solid #fff2;
+  font-family: serif;
 }
 select * {
   color: initial;
@@ -30,6 +32,7 @@ button {
   touch-action: manipulation;
   padding: 0;
 }
+
 /* remove select caret */
 select {
   -webkit-appearance: none;
@@ -40,12 +43,15 @@ select {
   text-align: center;
   justify-content: center;
 }
-
 /* for IE10 */
 select::-ms-expand {
   display: none;
 }
 
+div select:hover,
+button:hover {
+  background-color: #312b26;
+}
 
 /* ------------ cards ------------ */
 .mini-h {
@@ -73,6 +79,31 @@ select::-ms-expand {
   color: transparent;
   max-width: 100%;
   width: 100%;
+}
+.mini-h select:hover,
+.mini-v select:hover,
+.mini-h button:hover,
+.mini-v button:hover,
+.dual-buttons button:hover,
+.dual-buttons button:hover {
+  background: #fff4;
+}
+
+/* ------------ cards ------------ */
+.dual-buttons button {
+  position: absolute;
+  height: 100%;
+  width: 50%;
+}
+.dual-buttons button:first-child {
+  left: 0;
+  right: 50%;
+  border-radius: var(--unit) 0 0 var(--unit);
+}
+.dual-buttons button:last-child {
+  left: 50%;
+  right: 0;
+  border-radius: 0 var(--unit) var(--unit) 0;
 }
 
 /* ------------ header ------------ */
@@ -161,6 +192,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-left: var(--unit);
 }
 
 .trinket {
@@ -217,9 +249,96 @@ main {
   position: relative;
 }
 
+.text-button {
+  padding: 0 calc(2 * var(--unit));
+  font-size: calc(2.5 * var(--unit));
+  background: #0b0704;
+  color: #fedfae;
+}
+.text-button:hover {
+  background: #312b26;
+}
+
+.transform {
+  position: absolute;
+  top: calc(.5 * var(--unit));
+  left: calc(2.5 * var(--unit));
+}
+.clear-condition {
+  position: absolute;
+  top: calc(.5 * var(--unit));
+  right: var(--unit);
+}
+.add-condition {
+  position: absolute;
+  top: calc(4 * var(--unit));
+  right: var(--unit);
+}
+.next-turn {
+  position: absolute;
+  top: calc(7.5 * var(--unit));
+  right: var(--unit);
+}
+
+.conditions {
+  position: absolute;
+  z-index: 1;
+  top: 12.5%;
+  left: 32%;
+  width: 300%;
+  display: flex;
+}
+.stack {
+  width: calc(7 * var(--unit));
+  position: relative;
+}
+.stack .condition {
+  position: absolute;
+}
+.stack .condition:nth-child(2) {
+  top: calc(1 * var(--unit));
+}
+.stack .condition:nth-child(3) {
+  top: calc(2 * var(--unit));
+}
+.stack .condition:nth-child(4) {
+  top: calc(3 * var(--unit));
+}
+.stack .condition:nth-child(5) {
+  top: calc(4 * var(--unit));
+}
+.stack .condition:nth-child(6) {
+  top: calc(5 * var(--unit));
+}
+
+.condition {
+  width: calc(6 * var(--unit));
+  height: calc(6 * var(--unit));
+  margin-right: calc(1 * var(--unit));
+  margin-bottom: calc(1 * var(--unit));
+  border-radius: 100%;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  border: 1px solid #fff2;
+}
+
+.stunned {
+  position: absolute;
+  top: 27%;
+  left: 30%;
+  background: rgb(11 7 4 / 90%);
+  padding: calc(1 * var(--unit));
+  border-radius: calc(1 * var(--unit));
+
+  color: #fedfae;
+  text-align: center;
+  font-size: calc(2 * var(--unit));
+}
+
 .wounds {
   position: absolute;
-  top: 25%;
+  top: 36%;
   right: 4%;
   width: calc(11 * var(--unit));
   height: calc(11 * var(--unit));
@@ -230,7 +349,8 @@ main {
   color: red;
   font-size: calc(3.5 * var(--unit));
 
-  background-image: url(img/game/wounds.png);
+  background-image: url(img/tokens/wounds.png);
+  background-repeat: no-repeat;
   background-size: 100%;
   border-radius: 100%;
 }
@@ -238,7 +358,7 @@ main {
 .xp {
   position: absolute;
   top: 39%;
-  right: 6%;
+  left: 10%;
   width: calc(9 * var(--unit));
   height: calc(7 * var(--unit));
 
@@ -249,28 +369,11 @@ main {
   padding-left: calc(1.5 * var(--unit));
 
   background: #0b0704;
-  background-image: url(img/game/xp.png);
+  background-image: url(img/tokens/xp.png);
   background-size: calc(7 * var(--unit));
   background-position: right;
   background-repeat: no-repeat;
   border-radius: var(--unit);
-}
-
-.heroCard button,
-.stressCount button {
-  position: absolute;
-  height: 100%;
-  width: 50%;
-}
-.heroCard button:first-child,
-.stressCount button:first-child {
-  left: 0;
-  right: 50%;
-}
-.heroCard button:last-child,
-.stressCount button:last-child {
-  left: 50%;
-  right: 0;
 }
 
 .wounds button:first-child {
@@ -278,15 +381,6 @@ main {
 }
 .wounds button:last-child {
   border-radius: 0 100% 100% 0 / 0 50% 50% 0;
-}
-
-.xp button:first-child,
-.stressCount button:first-child {
-  border-radius: var(--unit) 0 0 var(--unit);
-}
-.xp button:last-child,
-.stressCount button:last-child {
-  border-radius: 0 var(--unit) var(--unit) 0;
 }
 
 /* ------------ abilities ------------ */
@@ -387,7 +481,7 @@ main {
 }
 
 /* ------------ statuses ------------ */
-.status {
+.status-cards {
   display: flex;
   flex-direction: column;
 }
@@ -398,7 +492,7 @@ main {
 }
 
 .disease {
-  margin-right: 5px;
+  margin-right: var(--unit);
   background-image: url(img/game/disease.jpg);
 }
 
@@ -412,6 +506,95 @@ main {
 }
 
 .quirk {
-  margin-right: 5px;
+  margin-right: var(--unit);
   background-image: url(img/game/quirk.jpg);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #0006;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: #0b0704;
+  color: #fedfae;
+  position: relative;
+  padding: 3vh;
+  border-radius: 2vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal > *:not(:last-child) {
+  margin-bottom: 1vh;
+}
+
+.close-modal {
+  position: absolute;
+  top: 1vh;
+  right: 1vh;
+  width: 3vh;
+  height: 3vh;
+  color: #fedfae;
+  background: #0b0704;
+}
+
+.text {
+  width: 100%;
+  text-align: center;
+  font-size: calc(2.5 * var(--unit));
+}
+
+.radio-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 50vh;
+  margin-right: -1vh;
+}
+
+input[type="radio"] {
+  display: none;
+}
+.radio-label {
+  display: block;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(2.5 * var(--unit));
+}
+.radio-label:hover::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff2;
+}
+input[type="radio"]:checked + label {
+  border-color: darkred;
+  box-shadow: 0 0 .5vh .5vh darkred;
+}
+.modal .condition {
+  width: 6vh;
+  height: 6vh;
+  margin-right: 1vh;
+  margin-bottom: 1vh;
+}
+
+.modal button + button {
+  margin-left: 1vh;
 }

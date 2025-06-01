@@ -57,20 +57,45 @@
       </section>
 
       <section class="heroCard" :style="heroCard">
-        <div v-if="current.hero" class="wounds">
-          <button @click="current.wounds > 0 ? current.wounds-- : null"></button>
-          <span>{{ current.wounds }}</span>
-          <button @click="current.wounds++"></button>
-        </div>
-        <div v-if="current.hero" class="xp">
+        <button v-if="canTransform" @click="transformed = !transformed" class="text-button transform">
+          Transform
+        </button>
+        <div v-if="current.hero" class="xp dual-buttons">
           <button @click="current.xp > 0 ? current.xp-- : null"></button>
           <span>{{ current.xp }}</span>
           <button @click="current.xp++"></button>
         </div>
+
+        <button v-if="current.hero" @click="clearConditions()" class="text-button clear-condition">
+          Clear Conditions
+        </button>
+        <button v-if="current.hero" @click="adding = true" class="text-button add-condition">
+          Add Condition
+        </button>
+        <button v-if="current.hero" @click="nextTurn()" class="text-button next-turn">
+          Next Turn
+        </button>
+
+        <div v-if="current.hero" class="conditions">
+          <div v-for="item in current.conditions" class="stack">
+            <div v-for="_ in item.turns" class="condition" :style="conditionCard(item.condition)"></div>
+          </div>
+        </div>
+
+        <div v-if="stunned" class="stunned">
+          <div>you're stunned this turn!</div>
+          <div>-1 action</div>
+        </div>
+
+        <div v-if="current.hero" class="wounds dual-buttons">
+          <button @click="current.wounds > 0 ? current.wounds-- : null"></button>
+          <span>{{ current.wounds }}</span>
+          <button @click="current.wounds++"></button>
+        </div>
       </section>
 
       <section class="board">
-        <div v-if="current.hero" class="stressCount">
+        <div v-if="current.hero" class="stressCount dual-buttons">
           <button @click="current.stress > 0 ? current.stress-- : null"></button>
           <span>{{ current.stress }}</span>
           <button @click="current.stress++"></button>
@@ -99,7 +124,7 @@
         </div>
       </section>
 
-      <section class="status">
+      <section class="status-cards">
         <div class="diseases">
           <div class="mini-v disease" :style="diseaseCard">
             <select v-if="current.hero" v-model="current.disease">
@@ -144,6 +169,33 @@
         </div>
       </section>
     </main>
+
+    <section class="overlay" v-if="adding" @click.self="adding=false">
+      <div class="modal">
+        <button class="close-modal" @click="adding=false">X</button>
+
+        <div class="text">Select Condition</div>
+        <div class="radio-buttons">
+          <template v-for="item in conditions">
+            <input type="radio" :id="item" :value="item" v-model="condition" />
+            <label :for="item" class="radio-label condition" :style="conditionCard(item)">
+            </label>
+          </template>
+        </div>
+
+        <div class="text">Select Turns</div>
+        <div class="radio-buttons">
+          <template v-for="item in 6">
+            <input type="radio" :id="item" :value="item" v-model="turns" />
+            <label :for="item" class="radio-label condition">
+              {{item}}
+            </label>
+          </template>
+        </div>
+
+        <button class="text-button" @click="addCondition()">Add</button>
+      </div>
+    </section>
   </div>
 
   <script src="constants.js"></script>

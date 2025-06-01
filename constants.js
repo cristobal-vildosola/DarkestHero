@@ -1,9 +1,19 @@
-// trinkets positions
-const TRINKET_MARGIN = [
-  "calc(8 * var(--unit))",
-  "calc(3 * var(--unit))",
-  "calc(2 * var(--unit))",
-];
+const conditions = [
+  'bleed1',
+  'bleed2',
+  'bleed3',
+  'bleed4',
+  'blight1',
+  'blight2',
+  'blight3',
+  'blight4',
+  'buff',
+  'debuff',
+  'guard',
+  'mark',
+  'protection',
+  'stun',
+]
 
 const separateCards = [
   { url: (hero) => `${hero}/hero1.jpg`, x: 1, y: 1, index: 0 },
@@ -20,15 +30,16 @@ const doubleCardsTop = [
   { url: (hero) => `${hero}/hero2.png`, x: 2, y: 2, index: 0 },
   { url: (hero) => `${hero}/hero.png`, x: 2, y: 2, index: 1 },
 ];
-const megaCard1 = { url: () => `mega1.png`, x: 6, y: 4, index: 0 }
-const megaCard2 = { url: () => `mega2.png`, x: 6, y: 4, index: 0 }
+const megaCard1 = { url: () => 'mega1.png', x: 6, y: 4 }
+const megaCard2 = { url: () => 'mega2.png', x: 6, y: 4 }
+const abominationCard = { url: (_, transformed) => transformed ? 'mega2.png' : 'mega1.png', x: 6, y: 4 }
 
 const heroes = {
   abomination: {
     cardSprite: [
-      { ...megaCard1, index: 20 },
-      { ...megaCard1, index: 21 },
-      { ...megaCard1, index: 22 },
+      { ...abominationCard, index: 20 },
+      { ...abominationCard, index: 21 },
+      { ...abominationCard, index: 22 },
     ],
     abilities: [
       "Manacles",
@@ -370,4 +381,11 @@ const positives = [
   "Hoarder",
   "On Guard",
   "Skilled Gambler",
+];
+
+// trinkets positions
+const TRINKET_MARGIN = [
+  "calc(8 * var(--unit))",
+  "calc(3 * var(--unit))",
+  "calc(2 * var(--unit))",
 ];

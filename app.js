@@ -13,12 +13,19 @@ const defaultHero = {
   wounds: 0,
   xp: 0,
   stress: 0,
+  conditions: [],
 };
 
 createApp({
   data() {
     return {
       current: { ...defaultHero },
+      transformed: false,
+      stunned: true,
+
+      adding: false,
+      condition: '',
+      turns: 0,
 
       // options
       heroesPool: Object.keys(heroes),
@@ -28,6 +35,7 @@ createApp({
       virtues: virtues,
       negatives: negatives,
       positives: positives,
+      conditions: conditions,
       zoom: 1,
 
       TRINKET_MARGIN: TRINKET_MARGIN,
@@ -57,10 +65,13 @@ createApp({
       const card = heroes[this.current.hero].cardSprite[this.current.level - 1];
 
       return {
-        backgroundImage: `url('img/${card.url(this.current.hero)}')`,
+        backgroundImage: `url('img/${card.url(this.current.hero, this.transformed)}')`,
         backgroundPosition: this.position(card.index, card.x, card.y),
         backgroundSize: `${card.x * 100}%`,
       };
+    },
+    canTransform() {
+      return this.current.hero === 'abomination' && this.current.abilities.includes(3)
     },
     diseaseCard() {
       if (this.current.disease == "") return {};
@@ -133,12 +144,39 @@ createApp({
         backgroundSize: "1000%",
       };
     },
+    conditionCard(condition) {
+      return {
+        backgroundImage: `url(img/tokens/${condition}.png)`,
+      };
+    },
 
     // sprite position
     position(index, x_n, y_n) {
       const x = ((index % x_n) * 100) / (x_n - 1);
       const y = (Math.floor(index / x_n) * 100) / (y_n - 1);
       return `${x}% ${y}%`;
+    },
+
+    clearConditions() {
+      this.current.conditions = [];
+    },
+    addCondition() {
+      this.current.conditions.push({ condition: this.condition, turns: this.turns });
+      this.current.conditions.sort((a, b) => a.condition < b.condition ? -1 : 1)
+    },
+    nextTurn() {
+      this.stunned = false;
+      this.current.conditions.forEach(c => {
+        if (c.condition.startsWith('bl')) {
+          this.current.wounds += parseInt(c.condition.slice(-1));
+        }
+        if (c.condition == 'stun') {
+          this.stunned = true;
+        }
+      });
+      this.current.conditions = this.current.conditions.map(
+        c => ({ ...c, turns: c.turns - 1 })
+      ).filter(c => c.turns > 0);
     },
 
     saveGame() {
