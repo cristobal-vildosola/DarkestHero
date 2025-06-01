@@ -170,10 +170,10 @@ header button::after {
   /* change color to #fedfae https://codepen.io/sosuke/pen/Pjoqqp */
   filter: invert(98%) sepia(36%) saturate(5358%) hue-rotate(298deg) brightness(117%) contrast(112%);
 }
-.zoomIn::after {
+.zoom-in::after {
   background-image: url(img/icons/zoom_in.svg);
 }
-.zoomOut::after {
+.zoom-out::after {
   background-image: url(img/icons/zoom_out.svg);
 }
 .import::after {
@@ -420,32 +420,40 @@ main {
   min-width: calc(76 * var(--unit));
 }
 
-.stressCount {
+.stress-count {
   position: absolute;
-  left: 2%;
+  left: 12%;
   top: 4%;
   height: 6.3%;
-  width: 10%;
+  width: 9%;
 
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
+  background: #0004;
   font-size: calc(3.5 * var(--unit));
+  border-radius: var(--unit);
+  overflow: hidden;
 }
-
 .afflicted {
-  position: absolute;
-  left: 12.8%;
-  top: 4%;
-  height: 6.3%;
-  width: 7.3%;
-  background-color: rgba(139, 0, 0, 0.7);
+  background-color: rgb(193 0 0 / 50%);
+  color: white
+}
+.stress-count.stress-10 {
+  left: 3%;
+  top: 4.2%;
+  height: calc(5 * var(--unit));
+  width: calc(5 * var(--unit));
+  border-radius: 100%;
+  background: #fff2;
+  color: white;
+  font-size: calc(2.5 * var(--unit));
 }
 
 .stress {
   position: absolute;
-  left: 21%;
+  left: 21.2%;
   top: 4.2%;
   height: 7.7%;
   width: 68%;

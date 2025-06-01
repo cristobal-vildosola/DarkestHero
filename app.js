@@ -180,10 +180,10 @@ createApp({
     },
 
     wound(x) {
-      this.current.wounds = Math.min(33, this.current.wounds + x);
+      this.current.wounds = Math.max(0, Math.min(33, this.current.wounds + x));
     },
-    heal(x) {
-      this.current.wounds = Math.max(0, this.current.wounds - x);
+    stress(x) {
+      this.current.stress = Math.max(0, Math.min(19, this.current.stress + x));
     },
 
     saveGame() {

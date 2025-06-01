@@ -17,8 +17,8 @@
 <body>
   <div id="app">
     <header>
-      <button @click="zoom > .39 ? zoom -= .1 : null" class="zoomOut"></button>
-      <button @click="zoom < 1.41 ? zoom += .1 : null" class="zoomIn"></button>
+      <button @click="zoom > .39 ? zoom -= .1 : null" class="zoom-out"></button>
+      <button @click="zoom < 1.41 ? zoom += .1 : null" class="zoom-in"></button>
 
       <select v-model="current.hero" class="hero">
         <option value="" disabled hidden>select hero</option>
@@ -57,77 +57,82 @@
       </section>
 
       <section class="heroCard" :style="heroCard">
-        <button v-if="canTransform" @click="transformed = !transformed" class="text-button transform">
-          Transform
-        </button>
-        <div v-if="current.hero" class="xp dual-buttons">
-          <button @click="current.xp > 0 ? current.xp-- : null"></button>
-          <span>{{ current.xp }}</span>
-          <button @click="current.xp++"></button>
-        </div>
-
-        <button v-if="current.hero" @click="clearConditions()" class="text-button clear-condition">
-          Clear Conditions
-        </button>
-        <button v-if="current.hero" @click="adding = true" class="text-button add-condition">
-          Add Condition
-        </button>
-        <button v-if="current.hero" @click="nextTurn()" class="text-button next-turn">
-          Next Turn
-        </button>
-
-        <div v-if="current.hero" class="conditions">
-          <div v-for="item in current.conditions" class="stack">
-            <div v-for="_ in item.turns" class="condition" :style="conditionCard(item.condition)"></div>
+        <template v-if="current.hero">
+          <button v-if="canTransform" @click="transformed = !transformed" class="text-button transform">
+            Transform
+          </button>
+          <div class="xp dual-buttons">
+            <button @click="current.xp > 0 ? current.xp-- : null"></button>
+            <span>{{ current.xp }}</span>
+            <button @click="current.xp++"></button>
           </div>
-        </div>
 
-        <div v-if="stunned" class="stunned">
-          <div>you're stunned this turn!</div>
-          <div>-1 action</div>
-        </div>
+          <button @click="clearConditions()" class="text-button clear-condition">
+            Clear Conditions
+          </button>
+          <button @click="adding = true" class="text-button add-condition">
+            Add Condition
+          </button>
+          <button @click="nextTurn()" class="text-button next-turn">
+            Next Turn
+          </button>
 
-        <button v-if="current.hero" @click="wound(5)" class="text-button wound-5">
-          +5
-        </button>
-        <div v-if="current.hero" class="wounds dual-buttons">
-          <button @click="heal(1)"></button>
-          <span>{{ current.wounds }}</span>
-          <button @click="wound(1)"></button>
-        </div>
-        <button v-if="current.hero" @click="heal(5)" class="text-button heal-5">
-          -5
-        </button>
+          <div class="conditions">
+            <div v-for="item in current.conditions" class="stack">
+              <div v-for="_ in item.turns" class="condition" :style="conditionCard(item.condition)"></div>
+            </div>
+          </div>
+
+          <div v-if="stunned" class="stunned">
+            <div>you're stunned this turn!</div>
+            <div>-1 action</div>
+          </div>
+
+          <button @click="wound(5)" class="text-button wound-5">
+            +5
+          </button>
+          <div class="wounds dual-buttons">
+            <button @click="wound(-1)"></button>
+            <span>{{ current.wounds }}</span>
+            <button @click="wound(1)"></button>
+          </div>
+          <button @click="wound(-5)" class="text-button heal-5">
+            -5
+          </button>
+        </template>
       </section>
 
       <section class="board">
-        <div v-if="current.hero" class="stressCount dual-buttons">
-          <button @click="current.stress > 0 ? current.stress-- : null"></button>
-          <span>{{ current.stress }}</span>
-          <button @click="current.stress++"></button>
-        </div>
-
-        <div v-if="current.stress > 9" class="afflicted"></div>
-
-        <div v-if="current.hero" class="stress" :class="{red: current.stress > 9}">
-          <div v-for="_ in current.stress % 10"></div>
-        </div>
-
-        <div v-if="current.hero">
-          <div v-for="i in (2 + current.level)" class="mini-h ability" :style="abilityCard(current.abilities[i-1])"
-            :class="{selected: current.abilities[i-1] >= 0}">
-            <select v-model="current.abilities[i-1]">
-              <option v-for="(item, index) in abilitiesPool" :value="index">
-                {{ item }}
-              </option>
-            </select>
-            <select v-if="current.abilities[i-1] >= 0" v-model="current.abilitiesLevels[current.abilities[i-1]]">
-              <option v-for="item in 3" :value="item">
-                {{ 'I'.repeat(item) }}
-              </option>
-            </select>
+        <template v-if="current.hero">
+          <div class="stress-count dual-buttons" :class="{afflicted: current.stress > 9}">
+            <button @click="stress(-1)"></button>
+            <span>{{ current.stress }}</span>
+            <button @click="stress(1)"></button>
           </div>
-        </div>
+          <button @click="stress(-10)" class="stress-count stress-10">
+            -10
+          </button>
+
+          <div class="stress" :class="{red: current.stress > 9}">
+            <div v-for="_ in current.stress % 10"></div>
+          </div>
+
+          <div>
+            <div v-for="i in (2 + current.level)" class="mini-h ability" :style="abilityCard(current.abilities[i-1])"
+              :class="{selected: current.abilities[i-1] >= 0}">
+              <select v-model="current.abilities[i-1]">
+                <option v-for="(item, index) in abilitiesPool" :value="index">
+                  {{ item }}
+                </option>
+              </select>
+              <select v-if="current.abilities[i-1] >= 0" v-model="current.abilitiesLevels[current.abilities[i-1]]">
+                <option v-for="item in 3" :value="item">
+                  {{ 'I'.repeat(item) }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </template>
       </section>
 
       <section class="status-cards">
