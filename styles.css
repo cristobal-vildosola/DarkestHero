@@ -47,10 +47,11 @@ select {
 select::-ms-expand {
   display: none;
 }
-
-div select:hover,
-button:hover {
-  background-color: #312b26;
+@media (hover: hover) {
+  div select:hover,
+  button:hover {
+    background-color: #312b26;
+  }
 }
 
 /* ------------ cards ------------ */
@@ -80,13 +81,15 @@ button:hover {
   max-width: 100%;
   width: 100%;
 }
-.mini-h select:hover,
-.mini-v select:hover,
-.mini-h button:hover,
-.mini-v button:hover,
-.dual-buttons button:hover,
-.dual-buttons button:hover {
-  background: #fff4;
+@media (hover: hover) {
+  .mini-h select:hover,
+  .mini-v select:hover,
+  .mini-h button:hover,
+  .mini-v button:hover,
+  .dual-buttons button:hover,
+  .dual-buttons button:hover {
+    background: #fff4;
+  }
 }
 
 /* ------------ cards ------------ */
@@ -133,8 +136,8 @@ select.hero {
 }
 select.level {
   background: #0b0704;
-  width: 5vh;
-  height: 5vh;
+  width: 6vh;
+  height: 6vh;
   border-radius: 50%;
   text-align: center;
   color: #fedfae;
@@ -255,8 +258,10 @@ main {
   background: #0b0704;
   color: #fedfae;
 }
-.text-button:hover {
-  background: #312b26;
+@media (hover: hover) {
+  .text-button:hover {
+    background: #312b26;
+  }
 }
 
 .transform {
@@ -336,9 +341,29 @@ main {
   font-size: calc(2 * var(--unit));
 }
 
+.wound-5,
+.heal-5 {
+  right: 4%;
+  width: calc(5 * var(--unit));
+  height: calc(5 * var(--unit));
+  border-radius: 100%;
+  margin-right: calc(3 * var(--unit));
+  padding: 0;
+  border-color: #8b0000b0;
+  font-size: calc(2.5 * var(--unit));
+  color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.wound-5 {
+  position: absolute;
+  top: 26%;
+}
 .wounds {
   position: absolute;
-  top: 36%;
+  top: 32%;
   right: 4%;
   width: calc(11 * var(--unit));
   height: calc(11 * var(--unit));
@@ -354,10 +379,14 @@ main {
   background-size: 100%;
   border-radius: 100%;
 }
+.heal-5 {
+  position: absolute;
+  top: 45%;
+}
 
 .xp {
   position: absolute;
-  top: 39%;
+  top: 34%;
   left: 10%;
   width: calc(9 * var(--unit));
   height: calc(7 * var(--unit));
@@ -576,13 +605,15 @@ input[type="radio"] {
   justify-content: center;
   font-size: calc(2.5 * var(--unit));
 }
-.radio-label:hover::after {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #fff2;
+@media (hover: hover) {
+  .radio-label:hover::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff2;
+  }
 }
 input[type="radio"]:checked + label {
   border-color: darkred;

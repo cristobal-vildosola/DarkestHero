@@ -21,7 +21,7 @@ createApp({
     return {
       current: { ...defaultHero },
       transformed: false,
-      stunned: true,
+      stunned: false,
 
       adding: false,
       condition: '',
@@ -168,7 +168,7 @@ createApp({
       this.stunned = false;
       this.current.conditions.forEach(c => {
         if (c.condition.startsWith('bl')) {
-          this.current.wounds += parseInt(c.condition.slice(-1));
+          this.wound(parseInt(c.condition.slice(-1)));
         }
         if (c.condition == 'stun') {
           this.stunned = true;
@@ -177,6 +177,13 @@ createApp({
       this.current.conditions = this.current.conditions.map(
         c => ({ ...c, turns: c.turns - 1 })
       ).filter(c => c.turns > 0);
+    },
+
+    wound(x) {
+      this.current.wounds = Math.min(33, this.current.wounds + x);
+    },
+    heal(x) {
+      this.current.wounds = Math.max(0, this.current.wounds - x);
     },
 
     saveGame() {

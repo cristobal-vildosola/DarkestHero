@@ -87,11 +87,17 @@
           <div>-1 action</div>
         </div>
 
+        <button v-if="current.hero" @click="wound(5)" class="text-button wound-5">
+          +5
+        </button>
         <div v-if="current.hero" class="wounds dual-buttons">
-          <button @click="current.wounds > 0 ? current.wounds-- : null"></button>
+          <button @click="heal(1)"></button>
           <span>{{ current.wounds }}</span>
-          <button @click="current.wounds++"></button>
+          <button @click="wound(1)"></button>
         </div>
+        <button v-if="current.hero" @click="heal(5)" class="text-button heal-5">
+          -5
+        </button>
       </section>
 
       <section class="board">
