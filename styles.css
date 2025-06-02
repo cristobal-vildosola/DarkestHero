@@ -14,7 +14,7 @@ html {
   outline: none;
 }
 
-/* ------------ common ------------ */
+/* ------------ forms ------------ */
 select,
 button,
 label {
@@ -32,7 +32,12 @@ button {
   touch-action: manipulation;
   padding: 0;
 }
-
+.text-button {
+  padding: 0 calc(2 * var(--unit));
+  font-size: calc(2.5 * var(--unit));
+  background: #0b0704;
+  color: #fedfae;
+}
 /* remove select caret */
 select {
   -webkit-appearance: none;
@@ -51,6 +56,9 @@ select::-ms-expand {
   div select:hover,
   button:hover {
     background-color: #312b26;
+  }
+  .text-button:hover {
+    background: #312b26;
   }
 }
 
@@ -158,7 +166,7 @@ select.settings {
   margin-right: 1vh;
 }
 header button:has(+ button) {
-  margin-right: .5vh;
+  margin-right: 0.5vh;
 }
 header button,
 select.settings {
@@ -246,26 +254,14 @@ main {
   position: relative;
 }
 
-.text-button {
-  padding: 0 calc(2 * var(--unit));
-  font-size: calc(2.5 * var(--unit));
-  background: #0b0704;
-  color: #fedfae;
-}
-@media (hover: hover) {
-  .text-button:hover {
-    background: #312b26;
-  }
-}
-
 .transform {
   position: absolute;
-  top: calc(.5 * var(--unit));
+  top: calc(0.5 * var(--unit));
   left: calc(2.5 * var(--unit));
 }
 .clear-condition {
   position: absolute;
-  top: calc(.5 * var(--unit));
+  top: calc(0.5 * var(--unit));
   right: var(--unit);
 }
 .add-condition {
@@ -432,7 +428,7 @@ main {
   }
 }
 
-/* ------------ abilities ------------ */
+/* ------------ hero board ------------ */
 .board {
   position: relative;
   background-image: url(img/game/board.png);
@@ -469,7 +465,7 @@ main {
 }
 .afflicted {
   background-color: rgb(193 0 0 / 50%);
-  color: white
+  color: white;
 }
 
 .stress {
@@ -538,6 +534,19 @@ main {
   left: 47.7%;
 }
 
+.use-blacksmith {
+  position: absolute;
+  height: 4vh;
+  top: 37%;
+  right: 18%;
+}
+.clear-blacksmith {
+  position: absolute;
+  height: 4vh;
+  top: 42%;
+  right: 17%;
+}
+
 /* ------------ statuses ------------ */
 .status-cards {
   display: flex;
@@ -585,7 +594,7 @@ main {
   background-color: #0b0704;
   color: #fedfae;
   position: relative;
-  padding: 3vh;
+  padding: 4vh;
   border-radius: 2vh;
   margin: 1vh;
 
@@ -628,8 +637,14 @@ input[type="radio"] {
   display: none;
 }
 .radio-label {
-  display: block;
+  height: 4vh;
+  margin-right: 1vh;
+  margin-bottom: 1vh;
+  border-radius: 2vh;
+  padding: 1vh;
+
   position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -638,6 +653,8 @@ input[type="radio"] {
 @media (hover: hover) {
   .radio-label:hover::after {
     position: absolute;
+    content: "";
+    display: block;
     top: 0;
     left: 0;
     width: 100%;
@@ -647,13 +664,14 @@ input[type="radio"] {
 }
 input[type="radio"]:checked + label {
   border-color: darkred;
-  box-shadow: 0 0 .5vh .5vh darkred;
+  box-shadow: 0 0 0.5vh 0.5vh darkred;
 }
 .modal .condition {
   width: 6vh;
   height: 6vh;
   margin-right: 1vh;
   margin-bottom: 1vh;
+  border-radius: 100%;
 }
 
 .modal button + button {

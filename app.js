@@ -7,6 +7,7 @@ const defaultHero = {
   trinketStates: [false, false, false],
   abilities: [-1, -1, -1, -1, -1],
   abilitiesLevels: [1, 1, 1, 1, 1, 1, 1],
+  abilitiesBlacksmith: [1, 1, 1, 1, 1, 1, 1],
   disease: "",
   affliction: "",
   quirks: ["", "", ""],
@@ -23,15 +24,19 @@ createApp({
       transformed: false,
       stunned: false,
 
-      setting: '',
+      // modals and options
+      setting: "",
       addingConditions: false,
+      condition: "",
+      turns: 0,
       clearingConditions: false,
       clearingStress: false,
+      blacksmithing: false,
+      ability: -1,
+      level: 2,
       clearingSave: false,
-      condition: '',
-      turns: 0,
 
-      // options
+      // game options
       heroesPool: Object.keys(heroes),
       trinketsPool: trinketsPool,
       diseases: diseases,
@@ -59,27 +64,36 @@ createApp({
 
     setting: {
       handler(value) {
-        console.log('udpated', value);
-        if (value === 'export') {
+        if (value === "export") {
           this.exportSave();
-        }
-        else if (value === 'import') {
+        } else if (value === "import") {
           this.importSave();
-        }
-        else if (value === 'clear') {
+        } else if (value === "clear") {
           this.clearingSave = true;
         }
-        this.setting = '';
+        this.setting = "";
       },
-    }
+    },
   },
 
   computed: {
     abilitiesPool() {
       return this.current.hero == "" ? [] : heroes[this.current.hero].abilities;
     },
+    blacksmithPool() {
+      return this.abilitiesPool
+        .map((x, i) => [x, i])
+        .filter(
+          ([_, i]) =>
+            this.current.abilities.includes(i) &&
+            this.current.abilitiesLevels[i] < 3
+        );
+    },
     canTransform() {
-      return this.current.hero === 'abomination' && this.current.abilities.includes(3)
+      return (
+        this.current.hero === "abomination" &&
+        this.current.abilities.includes(3)
+      );
     },
     maxLife() {
       if (this.current.hero == "") return 0;
@@ -95,7 +109,10 @@ createApp({
       const card = heroes[this.current.hero].cardSprite[this.current.level - 1];
 
       return {
-        backgroundImage: `url('img/${card.url(this.current.hero, this.transformed)}')`,
+        backgroundImage: `url('img/${card.url(
+          this.current.hero,
+          this.transformed
+        )}')`,
         backgroundPosition: this.position(card.index, card.x, card.y),
         backgroundSize: `${card.x * 100}%`,
       };
@@ -127,8 +144,14 @@ createApp({
       };
     },
     opened() {
-      return this.addingConditions || this.clearingConditions || this.clearingStress || this.clearingSave;
-    }
+      return (
+        this.addingConditions ||
+        this.clearingConditions ||
+        this.clearingStress ||
+        this.clearingSave ||
+        this.blacksmithing
+      );
+    },
   },
 
   methods: {
@@ -149,10 +172,14 @@ createApp({
         backgroundSize: "1000%",
       };
     },
-    abilityCard(ability) {
-      if (ability == -1) return { boxShadow: "none" };
+    abilityCard(i) {
+      if (i == -1) return { boxShadow: "none" };
 
-      const index = ability * 3 + this.current.abilitiesLevels[ability] - 1;
+      const level = Math.max(
+        this.current.abilitiesLevels[i],
+        this.current.abilitiesBlacksmith[i]
+      );
+      const index = i * 3 + level - 1;
       const x_n = heroes[this.current.hero].abilitiesSize[0];
       const y_n = heroes[this.current.hero].abilitiesSize[1];
       return {
@@ -191,22 +218,27 @@ createApp({
       this.current.conditions = [];
     },
     addCondition() {
-      this.current.conditions.push({ condition: this.condition, turns: this.turns });
-      this.current.conditions.sort((a, b) => a.condition < b.condition ? -1 : 1)
+      this.current.conditions.push({
+        condition: this.condition,
+        turns: this.turns,
+      });
+      this.current.conditions.sort((a, b) =>
+        a.condition < b.condition ? -1 : 1
+      );
     },
     nextTurn() {
       this.stunned = false;
-      this.current.conditions.forEach(c => {
-        if (c.condition.startsWith('bl')) {
+      this.current.conditions.forEach((c) => {
+        if (c.condition.startsWith("bl")) {
           this.wound(parseInt(c.condition.slice(-1)));
         }
-        if (c.condition == 'stun') {
+        if (c.condition == "stun") {
           this.stunned = true;
         }
       });
-      this.current.conditions = this.current.conditions.map(
-        c => ({ ...c, turns: c.turns - 1 })
-      ).filter(c => c.turns > 0);
+      this.current.conditions = this.current.conditions
+        .map((c) => ({ ...c, turns: c.turns - 1 }))
+        .filter((c) => c.turns > 0);
     },
 
     wound(x) {
@@ -216,7 +248,16 @@ createApp({
       this.current.stress = this.clamp(this.current.stress + x, 19);
     },
     clamp(x, max) {
-      return Math.max(0, Math.min(max, x))
+      return Math.max(0, Math.min(max, x));
+    },
+
+    useBlacksmith() {
+      this.current.abilitiesBlacksmith[this.ability] = this.level;
+      this.blacksmithing = false;
+      this.ability = -1;
+    },
+    clearBlacksmith() {
+      this.current.abilitiesBlacksmith = [1, 1, 1, 1, 1, 1, 1];
     },
 
     closeModal() {
@@ -224,6 +265,7 @@ createApp({
       this.clearingConditions = false;
       this.clearingStress = false;
       this.clearingSave = false;
+      this.blacksmithing = false;
     },
     confirm() {
       if (this.clearingConditions) {

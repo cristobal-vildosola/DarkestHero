@@ -2,14 +2,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8" />
 
-  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <link rel="stylesheet" href="styles.css" />
 
   <title>Darkest Hero - by Piña</title>
   <link rel="icon" type="image/x-icon" href="img/icons/pina.png" />
   <link rel="apple-touch-icon" href="img/icons/pina.png" />
 
-  <link rel="manifest" href="manifest.json" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link
+    rel="manifest"
+    href="manifest.json"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
   <meta name="apple-mobile-web-app-status-bar" content="#000" />
   <meta name="theme-color" content="#000" />
 </head>
@@ -39,32 +44,54 @@
       {{ this.setting }}
 
       <a id="export" style="display: none"></a>
-      <input type="file" accept=".json" id="import" @change="onFileUpload" style="display: none" />
+      <input
+        type="file"
+        accept=".json"
+        id="import"
+        @change="onFileUpload"
+        style="display: none"
+      />
     </header>
 
     <main :style="{ '--unit': `${this.zoom}vh` }">
-      <section class="trinkets" :style="{ marginTop: TRINKET_MARGIN[current.level-1] }">
-        <div v-for="i in current.level" class="mini-h trinket" :class="{used: current.trinketStates[i-1]}"
-          :style="trinketCard(current.trinkets[i-1])">
+      <section
+        class="trinkets"
+        :style="{ marginTop: TRINKET_MARGIN[current.level-1] }"
+      >
+        <div
+          v-for="i in current.level"
+          class="mini-h trinket"
+          :class="{used: current.trinkets[i-1] != '' && current.trinketStates[i-1]}"
+          :style="trinketCard(current.trinkets[i-1])"
+        >
           <div>
             <select v-model="current.trinkets[i-1]" v-if="current.hero">
               <option value="">None</option>
-              <optgroup v-for="(trinkets, index) in trinketsPool" :label="`Level ${index+1}`">
+              <optgroup
+                v-for="(trinkets, index) in trinketsPool"
+                :label="`Level ${index+1}`"
+              >
                 <option v-for="trinket in trinkets" :value="trinket">
                   {{ trinket }}
                 </option>
               </optgroup>
             </select>
 
-            <button v-if="current.trinkets[i-1]"
-              @click="current.trinketStates[i-1] = !current.trinketStates[i-1]"></button>
+            <button
+              v-if="current.trinkets[i-1]"
+              @click="current.trinketStates[i-1] = !current.trinketStates[i-1]"
+            ></button>
           </div>
         </div>
       </section>
 
       <section class="heroCard" :style="heroCard">
         <template v-if="current.hero">
-          <button v-if="canTransform" @click="transformed = !transformed" class="text-button transform">
+          <button
+            v-if="canTransform"
+            @click="transformed = !transformed"
+            class="text-button transform"
+          >
             Transform
           </button>
           <div class="xp dual-buttons">
@@ -73,10 +100,16 @@
             <button @click="current.xp++"></button>
           </div>
 
-          <button @click="clearingConditions = current.conditions.length > 0" class="text-button clear-condition">
+          <button
+            @click="clearingConditions = current.conditions.length > 0"
+            class="text-button clear-condition"
+          >
             Clear Conditions
           </button>
-          <button @click="addingConditions = true" class="text-button add-condition">
+          <button
+            @click="addingConditions = true"
+            class="text-button add-condition"
+          >
             Add Condition
           </button>
           <button @click="nextTurn()" class="text-button next-turn">
@@ -85,7 +118,11 @@
 
           <div class="conditions">
             <div v-for="item in current.conditions" class="stack">
-              <div v-for="_ in item.turns" class="condition" :style="conditionCard(item.condition)"></div>
+              <div
+                v-for="_ in item.turns"
+                class="condition"
+                :style="conditionCard(item.condition)"
+              ></div>
             </div>
           </div>
 
@@ -94,30 +131,41 @@
             <div>-1 action</div>
           </div>
 
-          <button @click="wound(5)" class="text-button wound-5">
-            +5
-          </button>
+          <button @click="wound(5)" class="text-button wound-5">+5</button>
           <div class="wounds dual-buttons">
-            <button @click="wound(-1)" :class="{'deaths-door': deathsDoor}"></button>
+            <button
+              @click="wound(-1)"
+              :class="{'deaths-door': deathsDoor}"
+            ></button>
             <span>{{ current.wounds }}</span>
-            <button @click="wound(1)" :class="{'deaths-door': deathsDoor}"></button>
+            <button
+              @click="wound(1)"
+              :class="{'deaths-door': deathsDoor}"
+            ></button>
           </div>
-          <button @click="wound(-5)" class="text-button heal-5">
-            -5
-          </button>
+          <button @click="wound(-5)" class="text-button heal-5">-5</button>
 
-          <div class="death-door-chip" :class="{'deaths-door': deathsDoor}"></div>
+          <div
+            class="death-door-chip"
+            :class="{'deaths-door': deathsDoor}"
+          ></div>
         </template>
       </section>
 
       <section class="board">
         <template v-if="current.hero">
-          <div class="stress-count dual-buttons" :class="{afflicted: current.stress > 9}">
+          <div
+            class="stress-count dual-buttons"
+            :class="{afflicted: current.stress > 9}"
+          >
             <button @click="stress(-1)"></button>
             <span>{{ current.stress }}</span>
             <button @click="stress(1)"></button>
           </div>
-          <button @click="clearingStress = current.stress > 0" class="stress-10">
+          <button
+            @click="clearingStress = current.stress > 0"
+            class="stress-10"
+          >
             -10
           </button>
 
@@ -126,20 +174,40 @@
           </div>
 
           <div>
-            <div v-for="i in (2 + current.level)" class="mini-h ability" :style="abilityCard(current.abilities[i-1])"
-              :class="{selected: current.abilities[i-1] >= 0}">
+            <div
+              v-for="i in (2 + current.level)"
+              class="mini-h ability"
+              :style="abilityCard(current.abilities[i-1])"
+              :class="{selected: current.abilities[i-1] >= 0}"
+            >
               <select v-model="current.abilities[i-1]">
                 <option v-for="(item, index) in abilitiesPool" :value="index">
                   {{ item }}
                 </option>
               </select>
-              <select v-if="current.abilities[i-1] >= 0" v-model="current.abilitiesLevels[current.abilities[i-1]]">
+              <select
+                v-if="current.abilities[i-1] >= 0"
+                v-model="current.abilitiesLevels[current.abilities[i-1]]"
+              >
                 <option v-for="item in 3" :value="item">
                   {{ 'I'.repeat(item) }}
                 </option>
               </select>
             </div>
           </div>
+
+          <button
+            @click="blacksmithing = true"
+            class="text-button use-blacksmith"
+          >
+            Use Blacksmith
+          </button>
+          <button
+            @click="clearBlacksmith()"
+            class="text-button clear-blacksmith"
+          >
+            Clear Blacksmith
+          </button>
         </template>
       </section>
 
@@ -170,7 +238,11 @@
         </div>
 
         <div class="quirks">
-          <div v-for="i in 3" class="mini-v quirk" :style="quirkCard(current.quirks[i-1])">
+          <div
+            v-for="i in 3"
+            class="mini-v quirk"
+            :style="quirkCard(current.quirks[i-1])"
+          >
             <select v-model="current.quirks[i-1]" v-if="current.hero">
               <option value="">None</option>
               <optgroup label="Negative">
@@ -197,8 +269,17 @@
           <div class="text">Select Condition</div>
           <div class="modal-buttons">
             <template v-for="item in conditions">
-              <input type="radio" :id="item" :value="item" v-model="condition" />
-              <label :for="item" class="radio-label condition" :style="conditionCard(item)">
+              <input
+                type="radio"
+                :id="item"
+                :value="item"
+                v-model="condition"
+              />
+              <label
+                :for="item"
+                class="radio-label condition"
+                :style="conditionCard(item)"
+              >
               </label>
             </template>
           </div>
@@ -215,6 +296,34 @@
 
           <button class="text-button" @click="addCondition()">Add</button>
         </template>
+
+        <template v-else-if="blacksmithing">
+          <div class="text">Upgrade Ability</div>
+          <div class="modal-buttons">
+            <template v-for="item in blacksmithPool">
+              <input
+                type="radio"
+                :id="item[0]"
+                :value="item[1]"
+                v-model="ability"
+              />
+              <label :for="item[0]" class="radio-label">{{item[0]}}</label>
+            </template>
+          </div>
+
+          <div class="text">to Level</div>
+          <div class="modal-buttons">
+            <template v-for="item in 2">
+              <input type="radio" :id="item" :value="item+1" v-model="level" />
+              <label :for="item" class="radio-label condition">
+                {{item+1}}
+              </label>
+            </template>
+          </div>
+
+          <button class="text-button" @click="useBlacksmith()">Apply</button>
+        </template>
+
         <template v-else>
           <div class="text">
             Are you sure you want to
