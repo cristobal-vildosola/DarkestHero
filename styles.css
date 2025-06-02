@@ -379,6 +379,7 @@ main {
   background-size: 100%;
   border-radius: 100%;
 }
+
 .heal-5 {
   position: absolute;
   top: 45%;
@@ -410,6 +411,31 @@ main {
 }
 .wounds button:last-child {
   border-radius: 0 100% 100% 0 / 0 50% 50% 0;
+}
+
+.deaths-door {
+  background-color: rgb(193 0 0 / 50%);
+  animation-name: color;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+}
+.death-door-chip {
+  position: absolute;
+  top: 69.4%;
+  right: 7.7%;
+  width: 16.1%;
+  height: 9.1%;
+}
+@keyframes color {
+  0% {
+    background-color: rgb(193 0 0 / 50%);
+  }
+  50% {
+    background-color: rgb(193 0 0 / 25%);
+  }
+  100% {
+    background-color: rgb(193 0 0 / 50%);
+  }
 }
 
 /* ------------ abilities ------------ */

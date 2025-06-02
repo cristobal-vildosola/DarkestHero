@@ -58,6 +58,16 @@ createApp({
     abilitiesPool() {
       return this.current.hero == "" ? [] : heroes[this.current.hero].abilities;
     },
+    canTransform() {
+      return this.current.hero === 'abomination' && this.current.abilities.includes(3)
+    },
+    maxLife() {
+      if (this.current.hero == "") return 0;
+      return heroes[this.current.hero].life[this.current.level - 1];
+    },
+    deathsDoor() {
+      return this.current.wounds == this.maxLife;
+    },
 
     heroCard() {
       if (this.current.hero == "") return {};
@@ -69,9 +79,6 @@ createApp({
         backgroundPosition: this.position(card.index, card.x, card.y),
         backgroundSize: `${card.x * 100}%`,
       };
-    },
-    canTransform() {
-      return this.current.hero === 'abomination' && this.current.abilities.includes(3)
     },
     diseaseCard() {
       if (this.current.disease == "") return {};
@@ -180,10 +187,13 @@ createApp({
     },
 
     wound(x) {
-      this.current.wounds = Math.max(0, Math.min(33, this.current.wounds + x));
+      this.current.wounds = this.clamp(this.current.wounds + x, this.maxLife);
     },
     stress(x) {
-      this.current.stress = Math.max(0, Math.min(19, this.current.stress + x));
+      this.current.stress = this.clamp(this.current.stress + x, 19);
+    },
+    clamp(x, max) {
+      return Math.max(0, Math.min(max, x))
     },
 
     saveGame() {

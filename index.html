@@ -92,13 +92,15 @@
             +5
           </button>
           <div class="wounds dual-buttons">
-            <button @click="wound(-1)"></button>
+            <button @click="wound(-1)" :class="{'deaths-door': deathsDoor}"></button>
             <span>{{ current.wounds }}</span>
-            <button @click="wound(1)"></button>
+            <button @click="wound(1)" :class="{'deaths-door': deathsDoor}"></button>
           </div>
           <button @click="wound(-5)" class="text-button heal-5">
             -5
           </button>
+
+          <div class="death-door-chip" :class="{'deaths-door': deathsDoor}"></div>
         </template>
       </section>
 

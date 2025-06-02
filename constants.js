@@ -51,6 +51,7 @@ const heroes = {
       "Slam",
     ],
     abilitiesSize: [7, 3],
+    life: [13, 18, 23],
   },
   antiquarian: {
     cardSprite: doubleCardsBottom,
@@ -64,6 +65,7 @@ const heroes = {
       "Protect Me",
     ],
     abilitiesSize: [7, 3],
+    life: [9, 12, 15],
   },
   arbalest: {
     cardSprite: separateCards,
@@ -77,6 +79,7 @@ const heroes = {
       "Rallying Flare",
     ],
     abilitiesSize: [10, 7],
+    life: [14, 19, 24],
   },
   bounty_hunter: {
     cardSprite: [
@@ -94,6 +97,7 @@ const heroes = {
       "Caltrops",
     ],
     abilitiesSize: [7, 3],
+    life: [14, 18, 23],
   },
   crusader: {
     cardSprite: separateCards,
@@ -107,6 +111,7 @@ const heroes = {
       "Inspiring Cry",
     ],
     abilitiesSize: [10, 7],
+    life: [17, 24, 32],
   },
   flagellant: {
     cardSprite: doubleCardsBottom,
@@ -120,6 +125,7 @@ const heroes = {
       "Suffer",
     ],
     abilitiesSize: [7, 3],
+    life: [12, 16, 22],
   },
   grave_robber: {
     cardSprite: [
@@ -137,6 +143,7 @@ const heroes = {
       "Toxin Trickery",
     ],
     abilitiesSize: [7, 3],
+    life: [11, 15, 19],
   },
   hellion: {
     cardSprite: separateCards,
@@ -150,6 +157,7 @@ const heroes = {
       "Bleed Out",
     ],
     abilitiesSize: [10, 7],
+    life: [14, 18, 24],
   },
   highwayman: {
     cardSprite: separateCards,
@@ -163,6 +171,7 @@ const heroes = {
       "Open Vein",
     ],
     abilitiesSize: [10, 7],
+    life: [12, 17, 22],
   },
   houndmaster: {
     cardSprite: doubleCardsBottom,
@@ -176,6 +185,7 @@ const heroes = {
       "Blackjack",
     ],
     abilitiesSize: [7, 3],
+    life: [11, 15, 19],
   },
   jester: {
     cardSprite: separateCards,
@@ -189,6 +199,7 @@ const heroes = {
       "Inspiring Tune",
     ],
     abilitiesSize: [10, 7],
+    life: [10, 14, 18],
   },
   leper: {
     cardSprite: doubleCardsTop,
@@ -202,6 +213,7 @@ const heroes = {
       "Intimidate",
     ],
     abilitiesSize: [7, 3],
+    life: [18, 25, 33],
   },
   man_at_arms: {
     cardSprite: doubleCardsTop,
@@ -215,6 +227,7 @@ const heroes = {
       "Bolster",
     ],
     abilitiesSize: [7, 3],
+    life: [16, 22, 28],
   },
   occultist: {
     cardSprite: separateCards,
@@ -228,6 +241,7 @@ const heroes = {
       "Daemons' Pull",
     ],
     abilitiesSize: [10, 7],
+    life: [10, 14, 18],
   },
   plague_doctor: {
     cardSprite: separateCards,
@@ -241,6 +255,7 @@ const heroes = {
       "Disorienting Blast",
     ],
     abilitiesSize: [10, 7],
+    life: [11, 15, 19],
   },
   shieldbreaker: {
     cardSprite: doubleCardsTop,
@@ -254,6 +269,7 @@ const heroes = {
       "Serpent Sway",
     ],
     abilitiesSize: [7, 3],
+    life: [11, 15, 19],
   },
   vestal: {
     cardSprite: separateCards,
@@ -267,6 +283,7 @@ const heroes = {
       "Hand of Light",
     ],
     abilitiesSize: [10, 7],
+    life: [12, 17, 22],
   },
 };
 
