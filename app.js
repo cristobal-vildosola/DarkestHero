@@ -23,7 +23,11 @@ createApp({
       transformed: false,
       stunned: false,
 
-      adding: false,
+      setting: '',
+      addingConditions: false,
+      clearingConditions: false,
+      clearingStress: false,
+      clearingSave: false,
       condition: '',
       turns: 0,
 
@@ -52,6 +56,22 @@ createApp({
       },
       deep: true,
     },
+
+    setting: {
+      handler(value) {
+        console.log('udpated', value);
+        if (value === 'export') {
+          this.exportSave();
+        }
+        else if (value === 'import') {
+          this.importSave();
+        }
+        else if (value === 'clear') {
+          this.clearingSave = true;
+        }
+        this.setting = '';
+      },
+    }
   },
 
   computed: {
@@ -106,6 +126,9 @@ createApp({
         backgroundSize: "1000%",
       };
     },
+    opened() {
+      return this.addingConditions || this.clearingConditions || this.clearingStress || this.clearingSave;
+    }
   },
 
   methods: {
@@ -196,6 +219,23 @@ createApp({
       return Math.max(0, Math.min(max, x))
     },
 
+    closeModal() {
+      this.addingConditions = false;
+      this.clearingConditions = false;
+      this.clearingStress = false;
+      this.clearingSave = false;
+    },
+    confirm() {
+      if (this.clearingConditions) {
+        this.clearConditions();
+      } else if (this.clearingStress) {
+        this.stress(-10);
+      } else if (this.clearingSave) {
+        this.clearSave();
+      }
+      this.closeModal();
+    },
+
     saveGame() {
       localStorage.setItem("darkestHero", JSON.stringify(this.current));
     },
@@ -224,12 +264,10 @@ createApp({
       const reader = new FileReader();
       reader.onload = (event) => {
         const save = JSON.parse(event.target.result);
-        this.current = save;
+        this.current = { ...defaultHero, ...save };
       };
       reader.readAsText(event.target.files[0]);
     },
-
-    // TODO: clear save file
     clearSave() {
       localStorage.removeItem("darkestHero");
       this.current = { ...defaultHero };

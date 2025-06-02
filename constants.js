@@ -302,7 +302,7 @@ const trinketsPool = [
     "Sage's Book",
     "Speed Stone",
     "Stun Charm",
-    "Survival Guida",
+    "Survival Guide",
     "Warrior's Bracer",
   ],
   [

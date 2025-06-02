@@ -30,8 +30,14 @@
         <option v-for="x in 3" :value="x">{{ 'I'.repeat(x) }}</option>
       </select>
 
-      <button @click="exportSave()" class="export"></button>
-      <button @click="importSave()" class="import"></button>
+      <select v-model="setting" class="level settings">
+        <option value="" hidden disabled></option>
+        <option value="export">Export Save</option>
+        <option value="import">Import Save</option>
+        <option value="clear">Clear Save</option>
+      </select>
+      {{ this.setting }}
+
       <a id="export" style="display: none"></a>
       <input type="file" accept=".json" id="import" @change="onFileUpload" style="display: none" />
     </header>
@@ -67,10 +73,10 @@
             <button @click="current.xp++"></button>
           </div>
 
-          <button @click="clearConditions()" class="text-button clear-condition">
+          <button @click="clearingConditions = current.conditions.length > 0" class="text-button clear-condition">
             Clear Conditions
           </button>
-          <button @click="adding = true" class="text-button add-condition">
+          <button @click="addingConditions = true" class="text-button add-condition">
             Add Condition
           </button>
           <button @click="nextTurn()" class="text-button next-turn">
@@ -111,7 +117,7 @@
             <span>{{ current.stress }}</span>
             <button @click="stress(1)"></button>
           </div>
-          <button @click="stress(-10)" class="stress-count stress-10">
+          <button @click="clearingStress = current.stress > 0" class="stress-10">
             -10
           </button>
 
@@ -183,30 +189,46 @@
       </section>
     </main>
 
-    <section class="overlay" v-if="adding" @click.self="adding=false">
+    <section class="overlay" v-if="opened" @click.self="closeModal()">
       <div class="modal">
-        <button class="close-modal" @click="adding=false">X</button>
+        <button class="close-modal" @click="closeModal()">X</button>
 
-        <div class="text">Select Condition</div>
-        <div class="radio-buttons">
-          <template v-for="item in conditions">
-            <input type="radio" :id="item" :value="item" v-model="condition" />
-            <label :for="item" class="radio-label condition" :style="conditionCard(item)">
-            </label>
-          </template>
-        </div>
+        <template v-if="addingConditions">
+          <div class="text">Select Condition</div>
+          <div class="modal-buttons">
+            <template v-for="item in conditions">
+              <input type="radio" :id="item" :value="item" v-model="condition" />
+              <label :for="item" class="radio-label condition" :style="conditionCard(item)">
+              </label>
+            </template>
+          </div>
 
-        <div class="text">Select Turns</div>
-        <div class="radio-buttons">
-          <template v-for="item in 6">
-            <input type="radio" :id="item" :value="item" v-model="turns" />
-            <label :for="item" class="radio-label condition">
-              {{item}}
-            </label>
-          </template>
-        </div>
+          <div class="text">Select Turns</div>
+          <div class="modal-buttons">
+            <template v-for="item in 6">
+              <input type="radio" :id="item" :value="item" v-model="turns" />
+              <label :for="item" class="radio-label condition">
+                {{item}}
+              </label>
+            </template>
+          </div>
 
-        <button class="text-button" @click="addCondition()">Add</button>
+          <button class="text-button" @click="addCondition()">Add</button>
+        </template>
+        <template v-else>
+          <div class="text">
+            Are you sure you want to
+            <template v-if="clearingConditions">clear all conditions</template>
+            <template v-else-if="clearingStress">substract 10 stress</template>
+            <template v-else-if="clearingSave">reset your save file</template>
+            ?
+          </div>
+
+          <div class="modal-buttons">
+            <button class="text-button" @click="confirm()">Yes</button>
+            <button class="text-button" @click="closeModal()">No</button>
+          </div>
+        </template>
       </div>
     </section>
   </div>

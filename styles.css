@@ -22,7 +22,7 @@ label {
   border: 1px solid #fff2;
   font-family: serif;
 }
-select * {
+body select * {
   color: initial;
   font-size: initial;
 }
@@ -149,7 +149,8 @@ select.level option {
   color: #fedfae;
 }
 
-header button {
+header button,
+select.settings {
   width: 5vh;
   height: 5vh;
   background: #0b0704;
@@ -159,28 +160,21 @@ header button {
 header button:has(+ button) {
   margin-right: .5vh;
 }
-header button::after {
-  display: block;
-  content: "";
-  width: 70%;
-  height: 70%;
-  margin: 15%;
-  background-size: 100%;
+header button,
+select.settings {
+  background-position: center;
+  background-size: 70%;
   background-repeat: no-repeat;
-  /* change color to #fedfae https://codepen.io/sosuke/pen/Pjoqqp */
-  filter: invert(98%) sepia(36%) saturate(5358%) hue-rotate(298deg) brightness(117%) contrast(112%);
 }
-.zoom-in::after {
+.zoom-in {
   background-image: url(img/icons/zoom_in.svg);
 }
-.zoom-out::after {
+.zoom-out {
   background-image: url(img/icons/zoom_out.svg);
 }
-.import::after {
-  background-image: url(img/icons/upload.svg);
-}
-.export::after {
-  background-image: url(img/icons/save.svg);
+select.settings {
+  color: transparent;
+  background-image: url(img/icons/settings.svg);
 }
 
 main {
@@ -446,17 +440,28 @@ main {
   min-width: calc(76 * var(--unit));
 }
 
-.stress-count {
+.stress-count,
+.stress-10 {
   position: absolute;
-  left: 12%;
-  top: 4%;
-  height: 6.3%;
-  width: 9%;
-
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
+}
+.stress-10 {
+  left: 3%;
+  top: 4.2%;
+  height: calc(5 * var(--unit));
+  width: calc(5 * var(--unit));
+  font-size: calc(2.5 * var(--unit));
+  border-radius: 100%;
+  overflow: hidden;
+}
+.stress-count {
+  left: 12%;
+  top: 4%;
+  height: 6.3%;
+  width: 9%;
   background: #0004;
   font-size: calc(3.5 * var(--unit));
   border-radius: var(--unit);
@@ -465,16 +470,6 @@ main {
 .afflicted {
   background-color: rgb(193 0 0 / 50%);
   color: white
-}
-.stress-count.stress-10 {
-  left: 3%;
-  top: 4.2%;
-  height: calc(5 * var(--unit));
-  width: calc(5 * var(--unit));
-  border-radius: 100%;
-  background: #fff2;
-  color: white;
-  font-size: calc(2.5 * var(--unit));
 }
 
 .stress {
@@ -592,6 +587,7 @@ main {
   position: relative;
   padding: 3vh;
   border-radius: 2vh;
+  margin: 1vh;
 
   display: flex;
   flex-direction: column;
@@ -619,7 +615,7 @@ main {
   font-size: calc(2.5 * var(--unit));
 }
 
-.radio-buttons {
+.modal-buttons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
