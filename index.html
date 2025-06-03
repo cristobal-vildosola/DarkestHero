@@ -27,8 +27,8 @@
 
       <select v-model="current.hero" class="hero">
         <option value="" disabled hidden>select hero</option>
-        <option v-for="name in heroesPool" :value="name">
-          {{ name.replaceAll('_', ' ') }}
+        <option v-for="hero in heroesPool" :value="hero">
+          {{ heroName(hero) }}
         </option>
       </select>
       <select v-model="current.level" class="level">
@@ -37,11 +37,18 @@
 
       <select v-model="setting" class="level settings">
         <option value="" hidden disabled></option>
-        <option value="export">Export Save</option>
-        <option value="import">Import Save</option>
-        <option value="clear">Clear Save</option>
+        <optgroup label="Manage Save">
+          <option value="export">Export Save</option>
+          <option value="import">Import Save</option>
+          <option value="clear">Clear Save</option>
+        </optgroup>
+        <optgroup label="Switch Hero">
+          <option v-for="(item, i) in heroes" :value="i">
+            Save {{i+1}}: {{ item.hero ? `${heroName(item.hero)} - lvl
+            ${item.level}` : 'Empty' }}
+          </option>
+        </optgroup>
       </select>
-      {{ this.setting }}
 
       <a id="export" style="display: none"></a>
       <input

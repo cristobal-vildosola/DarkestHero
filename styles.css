@@ -203,6 +203,7 @@ select.settings {
 select.settings {
   color: transparent;
   background-image: url(img/icons/settings.svg);
+  font-size: unset;
 }
 
 main {
@@ -481,13 +482,13 @@ main {
   right: 3%;
 }
 .stress-count {
-  left: 12%;
+  left: 12.8%;
   top: 4%;
   height: 6.3%;
-  width: 9%;
+  width: 7.3%;
   background: #0004;
   font-size: calc(3.5 * var(--unit));
-  border-radius: var(--unit);
+  border-radius: 0;
   overflow: hidden;
 }
 .stress-count.afflicted {

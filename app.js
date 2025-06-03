@@ -20,12 +20,18 @@ const defaultHero = {
 createApp({
   data() {
     return {
-      current: { ...defaultHero },
+      heroes: [
+        { ...defaultHero },
+        { ...defaultHero },
+        { ...defaultHero },
+        { ...defaultHero },
+      ],
+      currentSave: 0,
       transformed: false,
       stunned: false,
 
       // modals and options
-      setting: "",
+      setting: 0,
       addingConditions: false,
       condition: "",
       turns: 0,
@@ -54,28 +60,50 @@ createApp({
     this.loadGame();
   },
   watch: {
-    current: {
+    heroes: {
       handler() {
         this.saveGame();
       },
       deep: true,
     },
+    currentSave() {
+      this.saveGame();
+    },
 
     setting: {
       handler(value) {
-        if (value === "export") {
-          this.exportSave();
-        } else if (value === "import") {
-          this.importSave();
-        } else if (value === "clear") {
-          this.clearingSave = true;
+        switch (value) {
+          case "export":
+            console.log("export");
+            this.exportSave();
+            break;
+          case "import":
+            console.log("import");
+            this.importSave();
+            break;
+          case "clear":
+            console.log("clear");
+            this.clearingSave = true;
+            break;
+          default:
+            if (typeof value === "number") this.currentSave = value;
         }
-        this.setting = "";
+        this.setting = this.currentSave;
       },
     },
   },
 
   computed: {
+    current() {
+      return this.heroes[this.currentSave];
+    },
+    save() {
+      return {
+        heroes: this.heroes,
+        currentSave: this.currentSave,
+      };
+    },
+
     abilitiesPool() {
       return this.current.hero == "" ? [] : heroes[this.current.hero].abilities;
     },
@@ -109,7 +137,6 @@ createApp({
       if (this.current.hero == "") return {};
 
       const card = heroes[this.current.hero].cardSprite[this.current.level - 1];
-
       return {
         backgroundImage: `url('img/${card.url(
           this.current.hero,
@@ -156,6 +183,9 @@ createApp({
   },
 
   methods: {
+    heroName(name) {
+      return name.replaceAll("_", " ");
+    },
     trinketCard(trinket) {
       if (trinket == "") return {};
 
@@ -290,17 +320,17 @@ createApp({
     },
 
     saveGame() {
-      localStorage.setItem("darkestHero", JSON.stringify(this.current));
+      localStorage.setItem("darkestHero", JSON.stringify(this.save));
     },
     loadGame() {
       const save = JSON.parse(localStorage.getItem("darkestHero"));
       if (save) {
-        this.current = { ...defaultHero, ...save };
+        this.load(save);
       }
     },
 
     exportSave() {
-      const save = JSON.stringify(this.current, null, 2);
+      const save = JSON.stringify(this.save, null, 2);
       const dataStr =
         "data:text/json;charset=utf-8," + encodeURIComponent(save);
       const dlAnchorElem = document.getElementById("export");
@@ -317,13 +347,32 @@ createApp({
       const reader = new FileReader();
       reader.onload = (event) => {
         const save = JSON.parse(event.target.result);
-        this.current = { ...defaultHero, ...save };
+        this.load(save);
       };
       reader.readAsText(event.target.files[0]);
     },
     clearSave() {
       localStorage.removeItem("darkestHero");
-      this.current = { ...defaultHero };
+      this.heroes = [
+        { ...defaultHero },
+        { ...defaultHero },
+        { ...defaultHero },
+        { ...defaultHero },
+      ];
+      this.currentSave = 0;
+    },
+
+    load(save) {
+      if (save.hasOwnProperty("currentSave")) {
+        this.heroes = save.heroes.map((hero) => ({
+          ...defaultHero,
+          ...hero,
+        }));
+        this.currentSave = save.currentSave;
+        this.setting = save.currentSave;
+      } else {
+        this.heroes[0] = { ...defaultHero, ...save };
+      }
     },
   },
 }).mount("#app");
