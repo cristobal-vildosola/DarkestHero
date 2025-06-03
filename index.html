@@ -154,24 +154,23 @@
 
       <section class="board">
         <template v-if="current.hero">
-          <div
-            class="stress-count dual-buttons"
-            :class="{afflicted: current.stress > 9}"
-          >
-            <button @click="stress(-1)"></button>
-            <span>{{ current.stress }}</span>
-            <button @click="stress(1)"></button>
-          </div>
+          <button class="stress-minus" @click="stress(-1)">-1</button>
           <button
-            @click="clearingStress = current.stress > 0"
-            class="stress-10"
+            class="stress-count"
+            :class="{afflicted: afflicted}"
+            @click="setStress(0)"
           >
-            -10
+            {{ current.stress % 10 }}
           </button>
 
-          <div class="stress" :class="{red: current.stress > 9}">
-            <div v-for="_ in current.stress % 10"></div>
+          <div class="stress">
+            <button
+              v-for="i in 10"
+              :class="{on: i <= (current.stress % 10), afflicted: afflicted}"
+              @click="setStress(i)"
+            ></button>
           </div>
+          <button class="stress-plus" @click="stress(1)">+1</button>
 
           <div>
             <div
@@ -311,12 +310,13 @@
             </template>
           </div>
 
-          <div class="text">to Level</div>
           <div class="modal-buttons">
+            <div class="text">to Level</div>
+
             <template v-for="item in 2">
               <input type="radio" :id="item" :value="item+1" v-model="level" />
               <label :for="item" class="radio-label condition">
-                {{item+1}}
+                {{ 'I'.repeat(item+1) }}
               </label>
             </template>
           </div>
@@ -328,7 +328,6 @@
           <div class="text">
             Are you sure you want to
             <template v-if="clearingConditions">clear all conditions</template>
-            <template v-else-if="clearingStress">substract 10 stress</template>
             <template v-else-if="clearingSave">reset your save file</template>
             ?
           </div>

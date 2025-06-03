@@ -52,6 +52,8 @@ select {
 select::-ms-expand {
   display: none;
 }
+
+/* hover states */
 @media (hover: hover) {
   div select:hover,
   button:hover {
@@ -59,6 +61,34 @@ select::-ms-expand {
   }
   .text-button:hover {
     background: #312b26;
+  }
+
+  .mini-h select:hover,
+  .mini-v select:hover,
+  .mini-h button:hover,
+  .mini-v button:hover,
+  .dual-buttons button:hover,
+  .dual-buttons button:hover,
+  .board button:hover,
+  .board button.afflicted:nth-child(10):hover {
+    background: #fff4;
+  }
+
+  .board button.afflicted:hover,
+  .board .stress button.on.afflicted:hover,
+  .board button:nth-child(10):hover {
+    background: rgba(255, 0, 0, 0.7);
+  }
+
+  .radio-label:hover::after {
+    position: absolute;
+    content: "";
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff2;
   }
 }
 
@@ -88,16 +118,6 @@ select::-ms-expand {
   color: transparent;
   max-width: 100%;
   width: 100%;
-}
-@media (hover: hover) {
-  .mini-h select:hover,
-  .mini-v select:hover,
-  .mini-h button:hover,
-  .mini-v button:hover,
-  .dual-buttons button:hover,
-  .dual-buttons button:hover {
-    background: #fff4;
-  }
 }
 
 /* ------------ cards ------------ */
@@ -437,21 +457,28 @@ main {
 }
 
 .stress-count,
-.stress-10 {
+.stress-minus,
+.stress-plus {
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
 }
-.stress-10 {
-  left: 3%;
-  top: 4.2%;
+.stress-minus,
+.stress-plus {
   height: calc(5 * var(--unit));
   width: calc(5 * var(--unit));
   font-size: calc(2.5 * var(--unit));
   border-radius: 100%;
   overflow: hidden;
+  top: 5.2%;
+}
+.stress-minus {
+  left: 4%;
+}
+.stress-plus {
+  right: 3%;
 }
 .stress-count {
   left: 12%;
@@ -463,7 +490,7 @@ main {
   border-radius: var(--unit);
   overflow: hidden;
 }
-.afflicted {
+.stress-count.afflicted {
   background-color: rgb(193 0 0 / 50%);
   color: white;
 }
@@ -476,18 +503,18 @@ main {
   width: 68%;
   display: flex;
 }
-.stress > div {
-  width: 10%;
-  padding: 1%;
+.stress button {
+  width: 8%;
+  margin: 1%;
+  border-radius: 1%;
 }
-.stress > div::after {
-  display: block;
-  content: "";
-  width: 100%;
-  height: 100%;
+.stress button.on {
   background-color: #dddddd;
 }
-.stress.red > div::after {
+.stress button.afflicted:nth-child(10) {
+  background-color: rgb(193 0 0 / 50%);
+}
+.stress button.on.afflicted {
   background-color: darkred;
 }
 
@@ -619,7 +646,6 @@ main {
 }
 
 .text {
-  width: 100%;
   text-align: center;
   font-size: calc(2.5 * var(--unit));
 }
@@ -630,7 +656,11 @@ main {
   justify-content: center;
   align-items: center;
   max-width: 50vh;
-  margin-right: -1vh;
+  margin-left: -1vh;
+}
+.modal-buttons > * {
+  margin-left: 1vh;
+  margin-bottom: 1vh;
 }
 
 input[type="radio"] {
@@ -638,8 +668,6 @@ input[type="radio"] {
 }
 .radio-label {
   height: 4vh;
-  margin-right: 1vh;
-  margin-bottom: 1vh;
   border-radius: 2vh;
   padding: 1vh;
 
@@ -649,18 +677,6 @@ input[type="radio"] {
   align-items: center;
   justify-content: center;
   font-size: calc(2.5 * var(--unit));
-}
-@media (hover: hover) {
-  .radio-label:hover::after {
-    position: absolute;
-    content: "";
-    display: block;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #fff2;
-  }
 }
 input[type="radio"]:checked + label {
   border-color: darkred;

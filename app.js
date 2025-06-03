@@ -30,7 +30,6 @@ createApp({
       condition: "",
       turns: 0,
       clearingConditions: false,
-      clearingStress: false,
       blacksmithing: false,
       ability: -1,
       level: 2,
@@ -102,6 +101,9 @@ createApp({
     deathsDoor() {
       return this.current.wounds == this.maxLife;
     },
+    afflicted() {
+      return this.current.stress >= 10;
+    },
 
     heroCard() {
       if (this.current.hero == "") return {};
@@ -147,7 +149,6 @@ createApp({
       return (
         this.addingConditions ||
         this.clearingConditions ||
-        this.clearingStress ||
         this.clearingSave ||
         this.blacksmithing
       );
@@ -245,10 +246,23 @@ createApp({
       this.current.wounds = this.clamp(this.current.wounds + x, this.maxLife);
     },
     stress(x) {
-      this.current.stress = this.clamp(this.current.stress + x, 19);
+      this.current.stress = this.clamp(
+        this.current.stress + x,
+        19,
+        this.afflicted ? 10 : 0
+      );
     },
-    clamp(x, max) {
-      return Math.max(0, Math.min(max, x));
+    setStress(x) {
+      if (this.afflicted && x == 10) {
+        this.current.stress -= 10;
+      } else if (this.afflicted) {
+        this.current.stress = x + 10;
+      } else {
+        this.current.stress = x;
+      }
+    },
+    clamp(x, max, min = 0) {
+      return Math.max(min, Math.min(max, x));
     },
 
     useBlacksmith() {
@@ -263,15 +277,12 @@ createApp({
     closeModal() {
       this.addingConditions = false;
       this.clearingConditions = false;
-      this.clearingStress = false;
       this.clearingSave = false;
       this.blacksmithing = false;
     },
     confirm() {
       if (this.clearingConditions) {
         this.clearConditions();
-      } else if (this.clearingStress) {
-        this.stress(-10);
       } else if (this.clearingSave) {
         this.clearSave();
       }
