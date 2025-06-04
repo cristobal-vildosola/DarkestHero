@@ -12,6 +12,7 @@ const conditions = [
   'guard',
   'mark',
   'protection',
+  'riposte',
   'stun',
 ]
 

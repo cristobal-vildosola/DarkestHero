@@ -56,11 +56,9 @@ select::-ms-expand {
 /* hover states */
 @media (hover: hover) {
   div select:hover,
-  button:hover {
-    background-color: #312b26;
-  }
+  button:hover,
   .text-button:hover {
-    background: #312b26;
+    background-color: #312b26;
   }
 
   .mini-h select:hover,
@@ -71,13 +69,13 @@ select::-ms-expand {
   .dual-buttons button:hover,
   .board button:hover,
   .board button.afflicted:nth-child(10):hover {
-    background: #fff4;
+    background-color: #fff4;
   }
 
   .board button.afflicted:hover,
   .board .stress button.on.afflicted:hover,
   .board button:nth-child(10):hover {
-    background: rgba(255, 0, 0, 0.7);
+    background-color: rgba(255, 0, 0, 0.7);
   }
 
   .radio-label:hover::after {
@@ -173,6 +171,7 @@ select.level {
   margin-right: 1vh;
 }
 select.hero option,
+select.level optgroup,
 select.level option {
   color: #fedfae;
 }
@@ -306,10 +305,12 @@ main {
 }
 .stack {
   width: calc(7 * var(--unit));
+  height: calc(10 * var(--unit));
   position: relative;
 }
 .stack .condition {
   position: absolute;
+  top: 0;
 }
 .stack .condition:nth-child(2) {
   top: calc(1 * var(--unit));
@@ -330,8 +331,6 @@ main {
 .condition {
   width: calc(6 * var(--unit));
   height: calc(6 * var(--unit));
-  margin-right: calc(1 * var(--unit));
-  margin-bottom: calc(1 * var(--unit));
   border-radius: 100%;
   background-size: 100%;
   background-repeat: no-repeat;
@@ -606,6 +605,7 @@ main {
 }
 
 .overlay {
+  z-index: 100;
   position: fixed;
   top: 0;
   left: 0;
@@ -646,17 +646,24 @@ main {
   background: #0b0704;
 }
 
-.text {
+.modal .text {
   text-align: center;
   font-size: calc(2.5 * var(--unit));
+  align-self: center;
+}
+.modal hr {
+  flex: 1;
+  margin-top: 0;
+  align-self: center;
 }
 
 .modal-buttons {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  max-width: 50vh;
+  align-items: start;
+  width: 45vh;
   margin-left: -1vh;
 }
 .modal-buttons > * {
@@ -683,14 +690,20 @@ input[type="radio"]:checked + label {
   border-color: darkred;
   box-shadow: 0 0 0.5vh 0.5vh darkred;
 }
+.modal button + button {
+  margin-left: 1vh;
+}
+
 .modal .condition {
   width: 6vh;
   height: 6vh;
-  margin-right: 1vh;
-  margin-bottom: 1vh;
   border-radius: 100%;
 }
-
-.modal button + button {
-  margin-left: 1vh;
+.modal button.stack {
+  width: 6vh;
+  height: 11vh;
+  background-color: transparent;
+  border-radius: 3vh;
+  overflow: hidden;
+  border: 0;
 }

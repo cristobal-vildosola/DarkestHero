@@ -20,12 +20,7 @@ const defaultHero = {
 createApp({
   data() {
     return {
-      heroes: [
-        { ...defaultHero },
-        { ...defaultHero },
-        { ...defaultHero },
-        { ...defaultHero },
-      ],
+      heroes: [{ ...defaultHero }],
       currentSave: 0,
       transformed: false,
       stunned: false,
@@ -35,7 +30,7 @@ createApp({
       addingConditions: false,
       condition: "",
       turns: 0,
-      clearingConditions: false,
+      editingConditions: false,
       blacksmithing: false,
       ability: -1,
       level: 2,
@@ -84,6 +79,14 @@ createApp({
           case "clear":
             console.log("clear");
             this.clearingSave = true;
+            break;
+          case "add-hero":
+            this.heroes.push({ ...defaultHero });
+            this.currentSave = this.heroes.length - 1;
+            break;
+          case "delete-hero":
+            this.heroes.splice(this.currentSave, 1);
+            this.currentSave = 0;
             break;
           default:
             if (typeof value === "number") this.currentSave = value;
@@ -175,7 +178,7 @@ createApp({
     opened() {
       return (
         this.addingConditions ||
-        this.clearingConditions ||
+        this.editingConditions ||
         this.clearingSave ||
         this.blacksmithing
       );
@@ -245,9 +248,6 @@ createApp({
       return `${x}% ${y}%`;
     },
 
-    clearConditions() {
-      this.current.conditions = [];
-    },
     addCondition() {
       this.current.conditions.push({
         condition: this.condition,
@@ -257,7 +257,7 @@ createApp({
         a.condition < b.condition ? -1 : 1
       );
     },
-    nextTurn() {
+    startTurn() {
       this.stunned = false;
       this.current.conditions.forEach((c) => {
         if (c.condition.startsWith("bl")) {
@@ -270,6 +270,13 @@ createApp({
       this.current.conditions = this.current.conditions
         .map((c) => ({ ...c, turns: c.turns - 1 }))
         .filter((c) => c.turns > 0);
+    },
+    removeCondition(index) {
+      this.current.conditions.splice(index, 1);
+    },
+    clearConditions() {
+      this.current.conditions = [];
+      this.editingConditions = false;
     },
 
     wound(x) {
@@ -306,16 +313,12 @@ createApp({
 
     closeModal() {
       this.addingConditions = false;
-      this.clearingConditions = false;
+      this.editingConditions = false;
       this.clearingSave = false;
       this.blacksmithing = false;
     },
     confirm() {
-      if (this.clearingConditions) {
-        this.clearConditions();
-      } else if (this.clearingSave) {
-        this.clearSave();
-      }
+      this.clearSave();
       this.closeModal();
     },
 
