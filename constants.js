@@ -1,39 +1,38 @@
 const conditions = [
-  'bleed1',
-  'bleed2',
-  'bleed3',
-  'bleed4',
-  'blight1',
-  'blight2',
-  'blight3',
-  'blight4',
-  'buff',
-  'debuff',
-  'guard',
-  'mark',
-  'protection',
-  'riposte',
-  'stun',
-]
+  "bleed1",
+  "bleed2",
+  "bleed3",
+  "bleed4",
+  "blight1",
+  "blight2",
+  "blight3",
+  "blight4",
+  "buff",
+  "debuff",
+  "guard",
+  "mark",
+  "protection",
+  "riposte",
+  "stun",
+];
 
 const separateCards = [
-  { url: (hero) => `${hero}/hero1.jpg`, x: 1, y: 1, index: 0 },
-  { url: (hero) => `${hero}/hero2.jpg`, x: 1, y: 1, index: 0 },
-  { url: (hero) => `${hero}/hero3.jpg`, x: 1, y: 1, index: 0 },
+  { url: (hero) => `${hero}/hero1.webp`, x: 1, y: 1, index: 0 },
+  { url: (hero) => `${hero}/hero2.webp`, x: 1, y: 1, index: 0 },
+  { url: (hero) => `${hero}/hero3.webp`, x: 1, y: 1, index: 0 },
 ];
-const doubleCardsBottom = [
-  { url: (hero) => `${hero}/hero.png`, x: 2, y: 2, index: 2 },
-  { url: (hero) => `${hero}/hero2.png`, x: 2, y: 2, index: 2 },
-  { url: (hero) => `${hero}/hero.png`, x: 2, y: 2, index: 3 },
+const doubleCards = [
+  { url: (hero) => `${hero}/hero.webp`, x: 2, y: 1, index: 0 },
+  { url: (hero) => `${hero}/hero2.webp`, x: 2, y: 1, index: 0 },
+  { url: (hero) => `${hero}/hero.webp`, x: 2, y: 1, index: 1 },
 ];
-const doubleCardsTop = [
-  { url: (hero) => `${hero}/hero.png`, x: 2, y: 2, index: 0 },
-  { url: (hero) => `${hero}/hero2.png`, x: 2, y: 2, index: 0 },
-  { url: (hero) => `${hero}/hero.png`, x: 2, y: 2, index: 1 },
-];
-const megaCard1 = { url: () => 'mega1.png', x: 6, y: 4 }
-const megaCard2 = { url: () => 'mega2.png', x: 6, y: 4 }
-const abominationCard = { url: (_, transformed) => transformed ? 'mega2.png' : 'mega1.png', x: 6, y: 4 }
+const megaCard1 = { url: () => "mega1.webp", x: 6, y: 4 };
+const megaCard2 = { url: () => "mega2.webp", x: 6, y: 4 };
+const abominationCard = {
+  url: (_, transformed) => (transformed ? "mega2.webp" : "mega1.webp"),
+  x: 6,
+  y: 4,
+};
 
 const heroes = {
   abomination: {
@@ -55,7 +54,7 @@ const heroes = {
     life: [13, 18, 23],
   },
   antiquarian: {
-    cardSprite: doubleCardsBottom,
+    cardSprite: doubleCards,
     abilities: [
       "Nervous Stab",
       "Festering Vapours",
@@ -115,7 +114,7 @@ const heroes = {
     life: [17, 24, 32],
   },
   flagellant: {
-    cardSprite: doubleCardsBottom,
+    cardSprite: doubleCards,
     abilities: [
       "Punish",
       "Rain of Sorrows",
@@ -175,7 +174,7 @@ const heroes = {
     life: [12, 17, 22],
   },
   houndmaster: {
-    cardSprite: doubleCardsBottom,
+    cardSprite: doubleCards,
     abilities: [
       "Hound's Rush",
       "Hound's Harry",
@@ -203,7 +202,7 @@ const heroes = {
     life: [10, 14, 18],
   },
   leper: {
-    cardSprite: doubleCardsTop,
+    cardSprite: doubleCards,
     abilities: [
       "Chop",
       "Hew",
@@ -217,7 +216,7 @@ const heroes = {
     life: [18, 25, 33],
   },
   man_at_arms: {
-    cardSprite: doubleCardsTop,
+    cardSprite: doubleCards,
     abilities: [
       "Crush",
       "Rampart",
@@ -259,7 +258,7 @@ const heroes = {
     life: [11, 15, 19],
   },
   shieldbreaker: {
-    cardSprite: doubleCardsTop,
+    cardSprite: doubleCards,
     abilities: [
       "Pierce",
       "Puncture",

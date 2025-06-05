@@ -255,21 +255,21 @@ main {
 }
 
 .trinket:nth-child(1) {
-  background-image: url(img/game/trinket1.jpg);
+  background-image: url(img/game/trinket1.webp);
 }
 
 .trinket:nth-child(2) {
-  background-image: url(img/game/trinket2.jpg);
+  background-image: url(img/game/trinket2.webp);
 }
 
 .trinket:nth-child(3) {
-  background-image: url(img/game/trinket3.jpg);
+  background-image: url(img/game/trinket3.webp);
 }
 
 /* ------------ hero card ------------ */
 .heroCard {
   min-width: calc(50 * var(--unit));
-  background-image: url(img/game/hero.png);
+  background-image: url(img/game/hero.webp);
   background-size: 100%;
   position: relative;
 }
@@ -384,7 +384,7 @@ main {
   color: red;
   font-size: calc(3.5 * var(--unit));
 
-  background-image: url(img/tokens/wounds.png);
+  background-image: url(img/tokens/wounds.webp);
   background-repeat: no-repeat;
   background-size: 100%;
   border-radius: 100%;
@@ -409,7 +409,7 @@ main {
   padding-left: calc(1.5 * var(--unit));
 
   background: #0b0704;
-  background-image: url(img/tokens/xp.png);
+  background-image: url(img/tokens/xp.webp);
   background-size: calc(7 * var(--unit));
   background-position: right;
   background-repeat: no-repeat;
@@ -451,7 +451,7 @@ main {
 /* ------------ hero board ------------ */
 .board {
   position: relative;
-  background-image: url(img/game/board.png);
+  background-image: url(img/game/board.webp);
   background-size: 100%;
   min-width: calc(76 * var(--unit));
 }
@@ -587,11 +587,11 @@ main {
 
 .disease {
   margin-right: var(--unit);
-  background-image: url(img/game/disease.jpg);
+  background-image: url(img/game/disease.webp);
 }
 
 .virtue {
-  background-image: url(img/game/virtue.jpg);
+  background-image: url(img/game/virtue.webp);
 }
 
 .quirks {
@@ -601,7 +601,7 @@ main {
 
 .quirk {
   margin-right: var(--unit);
-  background-image: url(img/game/quirk.jpg);
+  background-image: url(img/game/quirk.webp);
 }
 
 .overlay {

@@ -153,11 +153,11 @@ createApp({
       if (this.current.disease == "") return {};
 
       return {
-        backgroundImage: "url(img/game/diseases.png)",
+        backgroundImage: "url(img/game/diseases.webp)",
         backgroundPosition: this.position(
           diseases.indexOf(this.current.disease),
           10,
-          7
+          2
         ),
         backgroundSize: "1000%",
       };
@@ -170,7 +170,7 @@ createApp({
       const index = Math.max(indexAff, indexVir);
       const sprite = indexAff > -1 ? "afflictions" : "virtues";
       return {
-        backgroundImage: `url(img/game/${sprite}.png)`,
+        backgroundImage: `url(img/game/${sprite}.webp)`,
         backgroundPosition: this.position(index, 10, 7),
         backgroundSize: "1000%",
       };
@@ -201,8 +201,8 @@ createApp({
         }
       }
       return {
-        backgroundImage: `url(img/game/${sprite}.png)`,
-        backgroundPosition: this.position(index, 10, 7),
+        backgroundImage: `url(img/game/${sprite}.webp)`,
+        backgroundPosition: this.position(index, 10, 2),
         backgroundSize: "1000%",
       };
     },
@@ -217,7 +217,7 @@ createApp({
       const x_n = heroes[this.current.hero].abilitiesSize[0];
       const y_n = heroes[this.current.hero].abilitiesSize[1];
       return {
-        backgroundImage: `url('img/${this.current.hero}/abilities.png')`,
+        backgroundImage: `url('img/${this.current.hero}/abilities.webp')`,
         backgroundSize: `${x_n * 100}%`,
         backgroundPosition: this.position(index, x_n, y_n),
       };
@@ -230,21 +230,21 @@ createApp({
       const index = Math.max(indexNeg, indexPos);
       const sprite = indexNeg > -1 ? "negatives" : "positives";
       return {
-        backgroundImage: `url(img/game/${sprite}.png)`,
-        backgroundPosition: this.position(index, 10, 7),
+        backgroundImage: `url(img/game/${sprite}.webp)`,
+        backgroundPosition: this.position(index, 10, 2),
         backgroundSize: "1000%",
       };
     },
     conditionCard(condition) {
       return {
-        backgroundImage: `url(img/tokens/${condition}.png)`,
+        backgroundImage: `url(img/tokens/${condition}.webp)`,
       };
     },
 
     // sprite position
     position(index, x_n, y_n) {
       const x = ((index % x_n) * 100) / (x_n - 1);
-      const y = (Math.floor(index / x_n) * 100) / (y_n - 1);
+      const y = y_n == 1 ? 1 : (Math.floor(index / x_n) * 100) / (y_n - 1);
       return `${x}% ${y}%`;
     },
 
