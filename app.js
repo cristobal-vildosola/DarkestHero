@@ -1,6 +1,6 @@
 const { createApp } = Vue;
 
-const defaultHero = {
+const defaultHero = () => ({
   hero: "",
   level: 1,
   trinkets: ["", "", ""],
@@ -15,12 +15,12 @@ const defaultHero = {
   xp: 0,
   stress: 0,
   conditions: [],
-};
+});
 
 createApp({
   data() {
     return {
-      heroes: [{ ...defaultHero }],
+      heroes: [defaultHero()],
       currentSave: 0,
       transformed: false,
       stunned: false,
@@ -34,7 +34,7 @@ createApp({
       blacksmithing: false,
       ability: -1,
       level: 2,
-      clearingSave: false,
+      deleting: false,
 
       // game options
       heroesPool: Object.keys(heroes),
@@ -69,24 +69,17 @@ createApp({
       handler(value) {
         switch (value) {
           case "export":
-            console.log("export");
             this.exportSave();
             break;
           case "import":
-            console.log("import");
             this.importSave();
             break;
-          case "clear":
-            console.log("clear");
-            this.clearingSave = true;
-            break;
           case "add-hero":
-            this.heroes.push({ ...defaultHero });
+            this.heroes.push(defaultHero());
             this.currentSave = this.heroes.length - 1;
             break;
           case "delete-hero":
-            this.heroes.splice(this.currentSave, 1);
-            this.currentSave = 0;
+            this.deleting = true;
             break;
           default:
             if (typeof value === "number") this.currentSave = value;
@@ -179,7 +172,7 @@ createApp({
       return (
         this.addingConditions ||
         this.editingConditions ||
-        this.clearingSave ||
+        this.deleting ||
         this.blacksmithing
       );
     },
@@ -314,14 +307,19 @@ createApp({
     closeModal() {
       this.addingConditions = false;
       this.editingConditions = false;
-      this.clearingSave = false;
+      this.deleting = false;
       this.blacksmithing = false;
     },
     confirm() {
-      this.clearSave();
+      this.deleteHero();
       this.closeModal();
     },
 
+    deleteHero() {
+      this.heroes.splice(this.currentSave, 1);
+      this.currentSave = 0;
+      this.setting = this.currentSave;
+    },
     saveGame() {
       localStorage.setItem("darkestHero", JSON.stringify(this.save));
     },
@@ -354,27 +352,17 @@ createApp({
       };
       reader.readAsText(event.target.files[0]);
     },
-    clearSave() {
-      localStorage.removeItem("darkestHero");
-      this.heroes = [
-        { ...defaultHero },
-        { ...defaultHero },
-        { ...defaultHero },
-        { ...defaultHero },
-      ];
-      this.currentSave = 0;
-    },
 
     load(save) {
       if (save.hasOwnProperty("currentSave")) {
         this.heroes = save.heroes.map((hero) => ({
-          ...defaultHero,
+          ...defaultHero(),
           ...hero,
         }));
         this.currentSave = save.currentSave;
         this.setting = save.currentSave;
       } else {
-        this.heroes[0] = { ...defaultHero, ...save };
+        this.heroes[0] = { ...defaultHero(), ...save };
       }
     },
   },
