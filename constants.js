@@ -187,6 +187,20 @@ const heroes = {
     abilitiesSize: [7, 3],
     life: [11, 15, 19],
   },
+  houndmaster_mod: {
+    cardSprite: doubleCards,
+    abilities: [
+      "Hound's Rush",
+      "Hound's Harry",
+      "Target Whistle",
+      "Cry Havoc",
+      "Guard Dog",
+      "Lick Wounds",
+      "Blackjack",
+    ],
+    abilitiesSize: [7, 3],
+    life: [11, 15, 19],
+  },
   jester: {
     cardSprite: separateCards,
     abilities: [
