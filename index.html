@@ -7,15 +7,10 @@
   <link rel="stylesheet" href="styles.css" />
 
   <title>Darkest Hero - by Piña</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png" />
 
-  <link
-    rel="manifest"
-    href="manifest.json"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+  <link rel="manifest" href="manifest.json" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <meta name="apple-mobile-web-app-status-bar" content="#000" />
   <meta name="theme-color" content="#000" />
   <meta
@@ -32,9 +27,7 @@
 
       <select v-model="current.hero" class="hero">
         <option value="" disabled hidden>select hero</option>
-        <option v-for="hero in heroesPool" :value="hero">
-          {{ heroName(hero) }}
-        </option>
+        <option v-for="hero in heroesPool" :value="hero">{{ heroName(hero) }}</option>
       </select>
       <select v-model="current.level" class="level">
         <option v-for="x in 3" :value="x">{{ 'I'.repeat(x) }}</option>
@@ -44,13 +37,13 @@
         <option value="" hidden disabled></option>
         <optgroup label="Switch Hero">
           <option v-for="(item, i) in heroes" :value="i">
-            Save {{i+1}}: {{ item.hero ? `${heroName(item.hero)} - lvl
-            ${item.level}` : 'Empty' }}
+            Save {{i+1}}: {{ saveName(item) }}{{ i == currentSave ? " - active" : "" }}
           </option>
+        </optgroup>
+        <optgroup label="Manage Heroes">
+          <option value="rename-hero">Rename Current Hero</option>
           <option value="add-hero">+ Add New Hero</option>
-          <option value="delete-hero" :disabled="heroes.length < 2">
-            - Delete Current Hero
-          </option>
+          <option value="delete-hero" :disabled="heroes.length < 2">- Delete Current Hero</option>
         </optgroup>
         <optgroup label="Manage Save">
           <option value="export">Export Save</option>
@@ -59,20 +52,11 @@
       </select>
 
       <a id="export" style="display: none"></a>
-      <input
-        type="file"
-        accept=".json"
-        id="import"
-        @change="onFileUpload"
-        style="display: none"
-      />
+      <input type="file" accept=".json" id="import" @change="onFileUpload" style="display: none" />
     </header>
 
     <main :style="{ '--unit': `${this.zoom}vh` }">
-      <section
-        class="trinkets"
-        :style="{ marginTop: TRINKET_MARGIN[current.level-1] }"
-      >
+      <section class="trinkets" :style="{ marginTop: TRINKET_MARGIN[current.level-1] }">
         <div
           v-for="i in current.level"
           class="mini-h trinket"
@@ -82,13 +66,8 @@
           <div>
             <select v-model="current.trinkets[i-1]" v-if="current.hero">
               <option value="">None</option>
-              <optgroup
-                v-for="(trinkets, index) in trinketsPool"
-                :label="`Level ${index+1}`"
-              >
-                <option v-for="trinket in trinkets" :value="trinket">
-                  {{ trinket }}
-                </option>
+              <optgroup v-for="(trinkets, index) in trinketsPool" :label="`Level ${index+1}`">
+                <option v-for="trinket in trinkets" :value="trinket">{{ trinket }}</option>
               </optgroup>
             </select>
 
@@ -121,15 +100,10 @@
           >
             Edit Conditions
           </button>
-          <button
-            @click="addingConditions = true"
-            class="text-button add-condition"
-          >
+          <button @click="addingConditions = true" class="text-button add-condition">
             Add Condition
           </button>
-          <button @click="startTurn()" class="text-button next-turn">
-            Start Turn
-          </button>
+          <button @click="startTurn()" class="text-button next-turn">Start Turn</button>
 
           <div class="conditions">
             <div v-for="item in current.conditions" class="stack">
@@ -148,33 +122,20 @@
 
           <button @click="wound(5)" class="text-button wound-5">+5</button>
           <div class="wounds dual-buttons">
-            <button
-              @click="wound(-1)"
-              :class="{'deaths-door': deathsDoor}"
-            ></button>
+            <button @click="wound(-1)" :class="{'deaths-door': deathsDoor}"></button>
             <span>{{ current.wounds }}</span>
-            <button
-              @click="wound(1)"
-              :class="{'deaths-door': deathsDoor}"
-            ></button>
+            <button @click="wound(1)" :class="{'deaths-door': deathsDoor}"></button>
           </div>
           <button @click="wound(-5)" class="text-button heal-5">-5</button>
 
-          <div
-            class="death-door-chip"
-            :class="{'deaths-door': deathsDoor}"
-          ></div>
+          <div class="death-door-chip" :class="{'deaths-door': deathsDoor}"></div>
         </template>
       </section>
 
       <section class="board">
         <template v-if="current.hero">
           <button class="stress-minus" @click="stress(-1)">-1</button>
-          <button
-            class="stress-count"
-            :class="{afflicted: afflicted}"
-            @click="setStress(0)"
-          >
+          <button class="stress-count" :class="{afflicted: afflicted}" @click="setStress(0)">
             {{ current.stress % 10 }}
           </button>
 
@@ -195,31 +156,21 @@
               :class="{selected: current.abilities[i-1] >= 0}"
             >
               <select v-model="current.abilities[i-1]">
-                <option v-for="(item, index) in abilitiesPool" :value="index">
-                  {{ item }}
-                </option>
+                <option v-for="(item, index) in abilitiesPool" :value="index">{{ item }}</option>
               </select>
               <select
                 v-if="current.abilities[i-1] >= 0"
                 v-model="current.abilitiesLevels[current.abilities[i-1]]"
               >
-                <option v-for="item in 3" :value="item">
-                  {{ 'I'.repeat(item) }}
-                </option>
+                <option v-for="item in 3" :value="item">{{ 'I'.repeat(item) }}</option>
               </select>
             </div>
           </div>
 
-          <button
-            @click="blacksmithing = true"
-            class="text-button use-blacksmith"
-          >
+          <button @click="blacksmithing = true" class="text-button use-blacksmith">
             Use Blacksmith
           </button>
-          <button
-            @click="clearBlacksmith()"
-            class="text-button clear-blacksmith"
-          >
+          <button @click="clearBlacksmith()" class="text-button clear-blacksmith">
             Clear Blacksmith
           </button>
         </template>
@@ -238,36 +189,24 @@
             <select v-if="current.hero" v-model="current.affliction">
               <option value="">None</option>
               <optgroup label="Afflictions">
-                <option v-for="item in afflictions" :value="item">
-                  {{ item }}
-                </option>
+                <option v-for="item in afflictions" :value="item">{{ item }}</option>
               </optgroup>
               <optgroup label="Virtues">
-                <option v-for="item in virtues" :value="item">
-                  {{ item }}
-                </option>
+                <option v-for="item in virtues" :value="item">{{ item }}</option>
               </optgroup>
             </select>
           </div>
         </div>
 
         <div class="quirks">
-          <div
-            v-for="i in 3"
-            class="mini-v quirk"
-            :style="quirkCard(current.quirks[i-1])"
-          >
+          <div v-for="i in 3" class="mini-v quirk" :style="quirkCard(current.quirks[i-1])">
             <select v-model="current.quirks[i-1]" v-if="current.hero">
               <option value="">None</option>
               <optgroup label="Negative">
-                <option v-for="item in negatives" :value="item">
-                  {{ item }}
-                </option>
+                <option v-for="item in negatives" :value="item">{{ item }}</option>
               </optgroup>
               <optgroup label="Positive">
-                <option v-for="item in positives" :value="item">
-                  {{ item }}
-                </option>
+                <option v-for="item in positives" :value="item">{{ item }}</option>
               </optgroup>
             </select>
           </div>
@@ -283,17 +222,8 @@
           <div class="text">Select Condition</div>
           <div class="modal-buttons">
             <template v-for="item in conditions">
-              <input
-                type="radio"
-                :id="item"
-                :value="item"
-                v-model="condition"
-              />
-              <label
-                :for="item"
-                class="radio-label condition"
-                :style="conditionCard(item)"
-              >
+              <input type="radio" :id="item" :value="item" v-model="condition" />
+              <label :for="item" class="radio-label condition" :style="conditionCard(item)">
               </label>
             </template>
           </div>
@@ -302,9 +232,7 @@
           <div class="modal-buttons">
             <template v-for="item in 6">
               <input type="radio" :id="item" :value="item" v-model="turns" />
-              <label :for="item" class="radio-label condition">
-                {{item}}
-              </label>
+              <label :for="item" class="radio-label condition"> {{item}} </label>
             </template>
           </div>
 
@@ -334,21 +262,14 @@
             <span>OR</span>
             <hr />
           </div>
-          <button class="text-button" @click="clearConditions()">
-            Clear all conditions
-          </button>
+          <button class="text-button" @click="clearConditions()">Clear all conditions</button>
         </template>
 
         <template v-else-if="blacksmithing">
           <div class="text">Upgrade Ability</div>
           <div class="modal-buttons">
             <template v-for="item in blacksmithPool">
-              <input
-                type="radio"
-                :id="item[0]"
-                :value="item[1]"
-                v-model="ability"
-              />
+              <input type="radio" :id="item[0]" :value="item[1]" v-model="ability" />
               <label :for="item[0]" class="radio-label">{{item[0]}}</label>
             </template>
           </div>
@@ -358,20 +279,31 @@
 
             <template v-for="item in 2">
               <input type="radio" :id="item" :value="item+1" v-model="level" />
-              <label :for="item" class="radio-label condition">
-                {{ 'I'.repeat(item+1) }}
-              </label>
+              <label :for="item" class="radio-label condition"> {{ 'I'.repeat(item+1) }} </label>
             </template>
           </div>
 
           <button class="text-button" @click="useBlacksmith()">Apply</button>
         </template>
 
-        <template v-else>
+        <template v-else-if="deleting">
           <div class="text">Are you sure you want to delete the current hero?</div>
 
           <div class="modal-buttons">
             <button class="text-button" @click="confirm()">Yes</button>
+            <button class="text-button" @click="closeModal()">No</button>
+          </div>
+        </template>
+
+        <template v-else-if="renaming">
+          <div class="text">Rename the current save?</div>
+
+          <form @submit.prevent="rename">
+            <input type="text" class="modal-buttons text" v-model="name" />
+          </form>
+
+          <div class="modal-buttons">
+            <button type="submit" class="text-button" @click="rename">Yes</button>
             <button class="text-button" @click="closeModal()">No</button>
           </div>
         </template>

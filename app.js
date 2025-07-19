@@ -1,6 +1,7 @@
 const { createApp } = Vue;
 
 const defaultHero = () => ({
+  name: "",
   hero: "",
   level: 1,
   trinkets: ["", "", ""],
@@ -35,6 +36,8 @@ createApp({
       ability: -1,
       level: 2,
       deleting: false,
+      renaming: false,
+      name: "",
 
       // game options
       heroesPool: Object.keys(heroes),
@@ -81,6 +84,10 @@ createApp({
           case "delete-hero":
             this.deleting = true;
             break;
+          case "rename-hero":
+            this.name = this.current.name;
+            this.renaming = true;
+            break;
           default:
             if (typeof value === "number") this.currentSave = value;
         }
@@ -107,16 +114,11 @@ createApp({
       return this.abilitiesPool
         .map((x, i) => [x, i])
         .filter(
-          ([_, i]) =>
-            this.current.abilities.includes(i) &&
-            this.current.abilitiesLevels[i] < 3
+          ([_, i]) => this.current.abilities.includes(i) && this.current.abilitiesLevels[i] < 3
         );
     },
     canTransform() {
-      return (
-        this.current.hero === "abomination" &&
-        this.current.abilities.includes(3)
-      );
+      return this.current.hero === "abomination" && this.current.abilities.includes(3);
     },
     maxLife() {
       if (this.current.hero == "") return 0;
@@ -134,10 +136,7 @@ createApp({
 
       const card = heroes[this.current.hero].cardSprite[this.current.level - 1];
       return {
-        backgroundImage: `url('img/${card.url(
-          this.current.hero,
-          this.transformed
-        )}')`,
+        backgroundImage: `url('img/${card.url(this.current.hero, this.transformed)}')`,
         backgroundPosition: this.position(card.index, card.x, card.y),
         backgroundSize: `${card.x * 100}%`,
       };
@@ -147,11 +146,7 @@ createApp({
 
       return {
         backgroundImage: "url(img/game/diseases.webp)",
-        backgroundPosition: this.position(
-          diseases.indexOf(this.current.disease),
-          10,
-          2
-        ),
+        backgroundPosition: this.position(diseases.indexOf(this.current.disease), 10, 2),
         backgroundSize: "1000%",
       };
     },
@@ -173,12 +168,23 @@ createApp({
         this.addingConditions ||
         this.editingConditions ||
         this.deleting ||
-        this.blacksmithing
+        this.blacksmithing ||
+        this.renaming
       );
     },
   },
 
   methods: {
+    saveName(save) {
+      if (save.name) return save.name;
+      if (save.hero) return `${this.heroName(save.hero)} - lvl ${save.level}`;
+      return "Empty";
+    },
+    rename() {
+      this.current.name = this.name;
+      this.closeModal();
+    },
+
     heroName(name) {
       return name.replaceAll("_", " ");
     },
@@ -202,10 +208,7 @@ createApp({
     abilityCard(i) {
       if (i == -1) return { boxShadow: "none" };
 
-      const level = Math.max(
-        this.current.abilitiesLevels[i],
-        this.current.abilitiesBlacksmith[i]
-      );
+      const level = Math.max(this.current.abilitiesLevels[i], this.current.abilitiesBlacksmith[i]);
       const index = i * 3 + level - 1;
       const x_n = heroes[this.current.hero].abilitiesSize[0];
       const y_n = heroes[this.current.hero].abilitiesSize[1];
@@ -246,9 +249,7 @@ createApp({
         condition: this.condition,
         turns: this.turns,
       });
-      this.current.conditions.sort((a, b) =>
-        a.condition < b.condition ? -1 : 1
-      );
+      this.current.conditions.sort((a, b) => (a.condition < b.condition ? -1 : 1));
     },
     startTurn() {
       this.stunned = false;
@@ -276,11 +277,7 @@ createApp({
       this.current.wounds = this.clamp(this.current.wounds + x, this.maxLife);
     },
     stress(x) {
-      this.current.stress = this.clamp(
-        this.current.stress + x,
-        19,
-        this.afflicted ? 10 : 0
-      );
+      this.current.stress = this.clamp(this.current.stress + x, 19, this.afflicted ? 10 : 0);
     },
     setStress(x) {
       if (this.afflicted && x == 10) {
@@ -309,6 +306,7 @@ createApp({
       this.editingConditions = false;
       this.deleting = false;
       this.blacksmithing = false;
+      this.renaming = false;
     },
     confirm() {
       this.deleteHero();
@@ -332,8 +330,7 @@ createApp({
 
     exportSave() {
       const save = JSON.stringify(this.save, null, 2);
-      const dataStr =
-        "data:text/json;charset=utf-8," + encodeURIComponent(save);
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(save);
       const dlAnchorElem = document.getElementById("export");
       dlAnchorElem.setAttribute("href", dataStr);
       dlAnchorElem.setAttribute("download", "DarkestHero.json");
